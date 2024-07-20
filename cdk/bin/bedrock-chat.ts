@@ -8,7 +8,7 @@ import { CronScheduleProps } from "../lib/utils/cron-schedule";
 
 const app = new cdk.App();
 
-const BEDROCK_REGION = app.node.tryGetContext("bedrockRegion");
+const BEDROCK_REGION: { [key: string]: string } = app.node.tryGetContext("bedrockRegion");
 
 if (typeof BEDROCK_REGION != 'object' && BEDROCK_REGION == null) {
   console.log("Invalid Bedrock region configuration: ", BEDROCK_REGION);
