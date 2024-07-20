@@ -10,12 +10,20 @@ from app.config import DEFAULT_GENERATION_CONFIG as DEFAULT_CLAUDE_GENERATION_CO
 from app.config import DEFAULT_MISTRAL_GENERATION_CONFIG
 from app.repositories.models.conversation import MessageModel
 from app.repositories.models.custom_bot import GenerationParamsModel
-from app.routes.schemas.conversation import type_model_name
+from app.routes.schemas.conversation import type_model_name, real_model_name
 from app.utils import convert_dict_keys_to_camel_case, get_bedrock_client
 
 logger = logging.getLogger(__name__)
 
-BEDROCK_REGION = os.environ.get("BEDROCK_REGION", "us-east-1")
+# BEDROCK_REGION = os.environ.get("BEDROCK_REGION", "us-east-1")
+DEFAULT_BEDROCK_REGIONS = {
+    "claude-v3-sonnet": "us-east-1",
+    "claude-v3.5-sonnet": "us-east-1",
+    "claude-v3-opus": "us-west-2",
+    "default": "us-west-2"
+}
+BEDROCK_REGIONS = os.environ.get("BEDROCK_REGIONS", DEFAULT_BEDROCK_REGIONS)
+
 ENABLE_MISTRAL = os.environ.get("ENABLE_MISTRAL", "") == "true"
 DEFAULT_GENERATION_CONFIG = (
     DEFAULT_MISTRAL_GENERATION_CONFIG
@@ -24,7 +32,6 @@ DEFAULT_GENERATION_CONFIG = (
 )
 
 client = get_bedrock_client()
-
 
 class ConverseApiRequest(TypedDict):
     inference_config: dict
@@ -177,12 +184,15 @@ def compose_args_for_converse_api(
 
 
 def call_converse_api(args: ConverseApiRequest) -> ConverseApiResponse:
-    client = get_bedrock_client()
+
     messages = args["messages"]
     inference_config = args["inference_config"]
     additional_model_request_fields = args["additional_model_request_fields"]
-    model_id = args["model_id"]
     system = args["system"]
+
+    model_id = args["model_id"]
+    model_name = rename_model_id(model_id)
+    client = get_bedrock_client(BEDROCK_REGIONS[model_name])
 
     response = client.converse(
         modelId=model_id,
@@ -236,6 +246,18 @@ def get_model_id(model: type_model_name) -> str:
     elif model == "mistral-large":
         return "mistral.mistral-large-2402-v1:0"
 
+def rename_model_id(model: real_model_name) -> str:
+    # Ref: https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids-arns.html
+    if model == "anthropic.claude-3-haiku-20240307-v1:0":
+        return "claude-v3-haiku"
+    elif model == "anthropic.claude-3-sonnet-20240229-v1:0":
+        return "claude-v3-sonnet"
+    elif model == "anthropic.claude-3-opus-20240229-v1:0":
+        return "claude-v3-opus"
+    elif model == "anthropic.claude-3-5-sonnet-20240620-v1:0":
+        return "claude-v3.5-sonnet"
+    else
+        return "default"
 
 def calculate_query_embedding(question: str) -> list[float]:
     model_id = DEFAULT_EMBEDDING_CONFIG["model_id"]

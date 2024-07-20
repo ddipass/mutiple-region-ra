@@ -10,6 +10,10 @@ const app = new cdk.App();
 
 const BEDROCK_REGION = app.node.tryGetContext("bedrockRegion");
 
+if (typeof BEDROCK_REGION != 'object' && BEDROCK_REGION == null) {
+  console.log("Invalid Bedrock region configuration: ", BEDROCK_REGIO);
+}
+
 // Allowed IP address ranges for this app itself
 const ALLOWED_IP_V4_ADDRESS_RANGES: string[] = app.node.tryGetContext(
   "allowedIpV4AddressRanges"

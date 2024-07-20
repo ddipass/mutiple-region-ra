@@ -13,11 +13,11 @@ const availableModels: {
   //   label: 'Claude 3 (Haiku)',
   //   supportMediaType: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
   // },
-  // {
-  //   modelId: 'claude-v3-sonnet',
-  //   label: 'Claude 3 (Sonnet)',
-  //   supportMediaType: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-  // },
+  {
+    modelId: 'claude-v3-sonnet',
+    label: 'Claude 3 (Sonnet)',
+    supportMediaType: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+  },
   {
     modelId: 'claude-v3.5-sonnet',
     label: 'Claude 3.5 (Sonnet)',

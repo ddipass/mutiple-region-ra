@@ -29,7 +29,15 @@ from ulid import ULID
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-BEDROCK_REGION = os.environ.get("BEDROCK_REGION", "us-east-1")
+# BEDROCK_REGION = os.environ.get("BEDROCK_REGION", "us-east-1")
+DEFAULT_BEDROCK_REGIONS = {
+    "claude-v3-sonnet": "us-east-1",
+    "claude-v3.5-sonnet": "us-east-1",
+    "claude-v3-opus": "us-west-2",
+    "default": "us-west-2"
+}
+BEDROCK_REGIONS = os.environ.get("BEDROCK_REGIONS", DEFAULT_BEDROCK_REGIONS)
+
 RETRIES_TO_INSERT_TO_POSTGRES = 4
 RETRY_DELAY_TO_INSERT_TO_POSTGRES = 2
 RETRIES_TO_UPDATE_SYNC_STATUS = 4

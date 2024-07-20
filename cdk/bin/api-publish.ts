@@ -8,6 +8,10 @@ const app = new cdk.App();
 
 const BEDROCK_REGION = app.node.tryGetContext("bedrockRegion");
 
+if (typeof BEDROCK_REGION != 'object' && BEDROCK_REGION == null) {
+  console.log("Invalid Bedrock region configuration: ", BEDROCK_REGIO);
+}
+
 // Usage plan for the published API
 const PUBLISHED_API_THROTTLE_RATE_LIMIT: number | undefined =
   app.node.tryGetContext("publishedApiThrottleRateLimit")

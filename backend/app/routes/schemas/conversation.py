@@ -16,6 +16,17 @@ type_model_name = Literal[
     "mistral-large",
 ]
 
+real_model_name = Literal[
+    "anthropic.claude-v2:1",
+    "anthropic.claude-instant-v1",
+    "anthropic.claude-3-sonnet-20240229-v1:0",
+    "anthropic.claude-3-haiku-20240307-v1:0",
+    "anthropic.claude-3-opus-20240229-v1:0",
+    "anthropic.claude-3-5-sonnet-20240620-v1:0",
+    "mistral.mistral-7b-instruct-v0:2",
+    "mistral.mixtral-8x7b-instruct-v0:1",
+    "mistral.mistral-large-2402-v1:0",
+]
 
 class Content(BaseSchema):
     content_type: Literal["text", "image", "textAttachment"] = Field(
