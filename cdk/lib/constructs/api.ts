@@ -23,13 +23,14 @@ import { IBucket } from "aws-cdk-lib/aws-s3";
 import { ISecret } from "aws-cdk-lib/aws-secretsmanager";
 import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import { UsageAnalysis } from "./usage-analysis";
+
 export interface ApiProps {
   readonly vpc: ec2.IVpc;
   readonly database: ITable;
   readonly dbSecrets: ISecret;
   readonly corsAllowOrigins?: string[];
   readonly auth: Auth;
-  readonly bedrockRegion: string;
+  readonly bedrockRegion: { [key: string]: string };
   readonly tableAccessRole: iam.IRole;
   readonly documentBucket: IBucket;
   readonly largeMessageBucket: IBucket;

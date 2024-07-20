@@ -26,7 +26,7 @@ import * as path from "path";
 import { BedrockKnowledgeBaseCodebuild } from "./constructs/bedrock-knowledge-base-codebuild";
 
 export interface BedrockChatStackProps extends StackProps {
-  readonly bedrockRegion: string;
+  readonly bedrockRegion: { [key: string]: string };
   readonly webAclId: string;
   readonly identityProviders: TIdentityProvider[];
   readonly userPoolDomainPrefix: string;

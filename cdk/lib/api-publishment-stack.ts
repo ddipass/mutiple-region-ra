@@ -21,7 +21,7 @@ export interface VpcConfig {
   isolatedSubnetIds: string[];
 }
 interface ApiPublishmentStackProps extends StackProps {
-  readonly bedrockRegion: string;
+  readonly bedrockRegion: { [key: string]: string };
   readonly vpcConfig: VpcConfig;
   readonly dbConfigHostname: string;
   readonly dbConfigPort: number;
