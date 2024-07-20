@@ -25,7 +25,7 @@ export interface WebSocketProps {
   readonly database: ITable;
   readonly dbSecrets: ISecret;
   readonly auth: Auth;
-  readonly bedrockRegion: { [key: string]: string };
+  readonly bedrockRegion: string;
   readonly tableAccessRole: iam.IRole;
   readonly documentBucket: s3.IBucket;
   readonly websocketSessionTable: ITable;

@@ -8,11 +8,7 @@ import { CronScheduleProps } from "../lib/utils/cron-schedule";
 
 const app = new cdk.App();
 
-const BEDROCK_REGION: { [key: string]: string } = app.node.tryGetContext("bedrockRegion");
-
-if (typeof BEDROCK_REGION != 'object' && BEDROCK_REGION == null) {
-  console.log("Invalid Bedrock region configuration: ", BEDROCK_REGION);
-}
+const BEDROCK_REGION = JSON.stringify(app.node.tryGetContext("bedrockRegion"));
 
 // Allowed IP address ranges for this app itself
 const ALLOWED_IP_V4_ADDRESS_RANGES: string[] = app.node.tryGetContext(

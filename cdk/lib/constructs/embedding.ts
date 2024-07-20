@@ -27,7 +27,7 @@ export interface EmbeddingProps {
   readonly vpc: ec2.IVpc;
   readonly database: ITable;
   readonly dbSecrets: ISecret;
-  readonly bedrockRegion: { [key: string]: string };
+  readonly bedrockRegion: string;
   readonly tableAccessRole: iam.IRole;
   readonly documentBucket: IBucket;
   readonly embeddingContainerVcpu: number;

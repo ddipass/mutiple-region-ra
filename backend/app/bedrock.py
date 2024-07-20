@@ -192,7 +192,8 @@ def call_converse_api(args: ConverseApiRequest) -> ConverseApiResponse:
 
     model_id = args["model_id"]
     model_name = rename_model_id(model_id)
-    client = get_bedrock_client(BEDROCK_REGIONS[model_name])
+    BEDROCK_REGIONS_JSON = json.loads(BEDROCK_REGIONS)
+    client = get_bedrock_client(BEDROCK_REGIONS_JSON[model_name])
 
     response = client.converse(
         modelId=model_id,

@@ -6,11 +6,7 @@ import * as apigateway from "aws-cdk-lib/aws-apigateway";
 
 const app = new cdk.App();
 
-const BEDROCK_REGION: { [key: string]: string } = app.node.tryGetContext("bedrockRegion");
-
-if (typeof BEDROCK_REGION != 'object' && BEDROCK_REGION == null) {
-  console.log("Invalid Bedrock region configuration: ", BEDROCK_REGION);
-}
+const BEDROCK_REGION = JSON.stringify(app.node.tryGetContext("bedrockRegion"));
 
 // Usage plan for the published API
 const PUBLISHED_API_THROTTLE_RATE_LIMIT: number | undefined =

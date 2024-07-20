@@ -30,7 +30,7 @@ export interface ApiProps {
   readonly dbSecrets: ISecret;
   readonly corsAllowOrigins?: string[];
   readonly auth: Auth;
-  readonly bedrockRegion: { [key: string]: string };
+  readonly bedrockRegion: string;
   readonly tableAccessRole: iam.IRole;
   readonly documentBucket: IBucket;
   readonly largeMessageBucket: IBucket;
