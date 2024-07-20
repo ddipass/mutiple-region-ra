@@ -56,7 +56,7 @@
       "claude-v3-sonnet": "us-east-1",
       "claude-v3.5-sonnet": "us-east-1",
       "claude-v3-opus": "us-west-2",
-      "default": "us-west-2",
+      "default": "us-west-2"
     },
     "allowedIpV4AddressRanges": ["0.0.0.0/1", "128.0.0.0/1"],
     "allowedIpV6AddressRanges": [
