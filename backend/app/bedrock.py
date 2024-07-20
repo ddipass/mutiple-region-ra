@@ -212,6 +212,11 @@ def calculate_price(
     output_tokens: int,
     region: str = BEDROCK_REGION,
 ) -> float:
+
+    model_name = rename_model_id(model)
+    BEDROCK_REGION_JSON = json.loads(BEDROCK_REGION)
+    region = BEDROCK_REGION_JSON[model_name]
+
     input_price = (
         BEDROCK_PRICING.get(region, {})
         .get(model, {})
