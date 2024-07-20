@@ -257,7 +257,7 @@ def rename_model_id(model: real_model_name) -> str:
         return "claude-v3-opus"
     elif model == "anthropic.claude-3-5-sonnet-20240620-v1:0":
         return "claude-v3.5-sonnet"
-    else
+    else:
         return "default"
 
 def calculate_query_embedding(question: str) -> list[float]:
