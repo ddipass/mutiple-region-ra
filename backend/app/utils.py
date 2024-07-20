@@ -13,6 +13,7 @@ from botocore.exceptions import ClientError
 
 logger = logging.getLogger(__name__)
 
+REGION = os.environ.get("REGION", "us-east-1")
 # BEDROCK_REGION = os.environ.get("BEDROCK_REGION", "us-east-1")
 DEFAULT_BEDROCK_REGION = {
     "claude-v3-sonnet": "us-east-1",
