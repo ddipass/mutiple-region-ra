@@ -16,13 +16,13 @@ from app.utils import convert_dict_keys_to_camel_case, get_bedrock_client
 logger = logging.getLogger(__name__)
 
 # BEDROCK_REGION = os.environ.get("BEDROCK_REGION", "us-east-1")
-DEFAULT_BEDROCK_REGIONS = {
+DEFAULT_BEDROCK_REGION = {
     "claude-v3-sonnet": "us-east-1",
     "claude-v3.5-sonnet": "us-east-1",
     "claude-v3-opus": "us-west-2",
     "default": "us-west-2"
 }
-BEDROCK_REGIONS = os.environ.get("BEDROCK_REGIONS", DEFAULT_BEDROCK_REGIONS)
+BEDROCK_REGION = os.environ.get("BEDROCK_REGION", DEFAULT_BEDROCK_REGION)
 
 ENABLE_MISTRAL = os.environ.get("ENABLE_MISTRAL", "") == "true"
 DEFAULT_GENERATION_CONFIG = (
@@ -192,8 +192,8 @@ def call_converse_api(args: ConverseApiRequest) -> ConverseApiResponse:
 
     model_id = args["model_id"]
     model_name = rename_model_id(model_id)
-    BEDROCK_REGIONS_JSON = json.loads(BEDROCK_REGIONS)
-    client = get_bedrock_client(BEDROCK_REGIONS_JSON[model_name])
+    BEDROCK_REGION_JSON = json.loads(BEDROCK_REGION)
+    client = get_bedrock_client(BEDROCK_REGION_JSON[model_name])
 
     response = client.converse(
         modelId=model_id,
