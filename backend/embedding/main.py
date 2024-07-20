@@ -30,13 +30,14 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # BEDROCK_REGION = os.environ.get("BEDROCK_REGION", "us-east-1")
-DEFAULT_BEDROCK_REGION = {
-    "claude-v3-sonnet": "us-east-1",
+DEFAULT_BEDROCK_REGION = '''{
+    "claude-v3-sonnet": "us-east-2",
     "claude-v3.5-sonnet": "us-east-1",
     "claude-v3-opus": "us-west-2",
     "default": "us-west-2"
-}
+}'''
 BEDROCK_REGION = os.environ.get("BEDROCK_REGION", DEFAULT_BEDROCK_REGION)
+BEDROCK_REGION_JSON = json.loads(BEDROCK_REGION)
 
 RETRIES_TO_INSERT_TO_POSTGRES = 4
 RETRY_DELAY_TO_INSERT_TO_POSTGRES = 2

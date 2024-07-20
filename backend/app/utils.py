@@ -15,13 +15,14 @@ logger = logging.getLogger(__name__)
 
 REGION = os.environ.get("REGION", "us-east-1")
 # BEDROCK_REGION = os.environ.get("BEDROCK_REGION", "us-east-1")
-DEFAULT_BEDROCK_REGION = {
+DEFAULT_BEDROCK_REGION = '''{
     "claude-v3-sonnet": "us-east-2",
     "claude-v3.5-sonnet": "us-east-1",
     "claude-v3-opus": "us-west-2",
     "default": "us-west-2"
-}
+}'''
 BEDROCK_REGION = os.environ.get("BEDROCK_REGION", DEFAULT_BEDROCK_REGION)
+BEDROCK_REGION_JSON = json.loads(BEDROCK_REGION)
 
 PUBLISH_API_CODEBUILD_PROJECT_NAME = os.environ.get(
     "PUBLISH_API_CODEBUILD_PROJECT_NAME", ""
@@ -48,7 +49,7 @@ def is_running_on_lambda():
     return "AWS_EXECUTION_ENV" in os.environ
 
 
-def get_bedrock_client(region=BEDROCK_REGION["default"]):
+def get_bedrock_client(region=BEDROCK_REGION_JSON["default"]):
     client = boto3.client("bedrock-runtime", region)
     return client
 
