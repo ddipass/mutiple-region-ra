@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, cloneElement, ReactElement } from 'react';
 import { BaseProps } from '../@types/common';
 import { Authenticator, CheckboxField, useAuthenticator } from '@aws-amplify/ui-react';
 import { useTranslation } from 'react-i18next';
@@ -25,15 +25,15 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
           </div>
         ),
         SignIn: {
-          FormFields: () => {
+          FormFields() {
             const { validationErrors } = useAuthenticator();
             return (
               <>
                 <Authenticator.SignIn.FormFields />
                 <CheckboxField
-                  errorMessage={validationErrors.signInAcknowledgement as string}
-                  hasError={!!validationErrors.signInAcknowledgement}
-                  name="signInAcknowledgement"
+                  errorMessage={validationErrors.usagerules as string}
+                  hasError={!!validationErrors.usagerules}
+                  name="usagerules"
                   value="yes"
                   label={
                     <>
@@ -49,7 +49,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
           },
         },
         SignUp: {
-          FormFields: () => {
+          FormFields() {
             const { validationErrors } = useAuthenticator();
             return (
               <>
@@ -67,14 +67,14 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
         },
       }}
       services={{
-        async validateCustomSignIn(formData: Record<string, any>) {
-          if (!formData.signInAcknowledgement) {
+        async validateCustomSignIn(formData) {
+          if (!formData.usagerules) {
             return {
-              signInAcknowledgement: t('auth.errors.mustAgreeUsageRules'),
+              usagerules: t('auth.errors.mustAgreeUsageRules'),
             };
           }
         },
-        async validateCustomSignUp(formData: Record<string, any>) {
+        async validateCustomSignUp(formData) {
           if (!formData.acknowledgement) {
             return {
               acknowledgement: t('auth.errors.mustAgreeTerms'),
@@ -83,12 +83,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
         },
       }}
     >
-      {({ signOut, user }) => {
-        if (React.isValidElement(children)) {
-          return React.cloneElement(children, { signOut, user });
-        }
-        return children;
-      }}
+      <>{cloneElement(children as ReactElement, { signOut })}</>
     </Authenticator>
   );
 };

@@ -22,7 +22,7 @@ const UsageRules: React.FC = () => {
         <PiArrowLeft className="mr-2" />
         {t('common.backToHome')}
       </Link>
-      <h1 className="text-3xl font-bold mb-6 text-aws-font-color">{t('usageRules.title')}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-aws-font-color">{t('usageRules.pageTitle')}</h1>
       <div className="space-y-4">
         <section>
           <h2 className="text-xl font-semibold mb-2 text-aws-font-color">{t('usageRules.section1.title')}</h2>
