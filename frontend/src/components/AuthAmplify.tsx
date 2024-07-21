@@ -1,7 +1,8 @@
 import React, { ReactNode, cloneElement, ReactElement } from 'react';
 import { BaseProps } from '../@types/common';
-import { Authenticator, CheckboxField, useAuthenticator } from '@aws-amplify/ui-react';
+import { Authenticator } from '@aws-amplify/ui-react';
 import { useTranslation } from 'react-i18next';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 import { SocialProvider } from '../@types/auth';
 
 const MISTRAL_ENABLED: boolean =
@@ -18,6 +19,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
   return (
     <Authenticator
       socialProviders={socialProviders}
+      initialState="signUp"
       components={{
         Header: () => (
           <div className="mb-5 mt-10 flex justify-center text-3xl text-aws-font-color">
