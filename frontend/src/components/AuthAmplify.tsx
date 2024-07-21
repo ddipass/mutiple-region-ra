@@ -30,9 +30,6 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
       );
     },
     SignIn: {
-      Header() {
-        return <Heading>Sign In</Heading>;
-      },
       Footer() {
         return (
           <CheckboxField
@@ -41,7 +38,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
             label={
               <>
                 {t('auth.agreeUsageRules')} 
-                <a href="/usage-rules" target="_blank" rel="noopener noreferrer">
+                <a href="/usage-rules" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
                   {t('auth.viewRules')}
                 </a>
               </>
@@ -51,15 +48,19 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
       },
     },
     SignUp: {
-      Header() {
-        return <Heading>Sign Up</Heading>;
-      },
       Footer() {
         return (
           <CheckboxField
             name="acknowledgement"
             value="yes"
-            label={t('auth.agreeTerms')}
+            label={
+              <>
+                {t('auth.agreeTerms')} 
+                <a href="/agreement" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
+                  {t('auth.viewTerms')}
+                </a>
+              </>
+            }
           />
         );
       },
@@ -91,22 +92,19 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
        family_name: {
          order: 2
        },
-       preferred_username: {
-         order: 4
-       },
        birthdate: {
          order: 3
        },
        password: {
-         order: 5
+         order: 4
        },
        confirm_password: {
-         order: 6
+         order: 5
        }
      },
   };
 
-  // const signUpAttributes = ['birthdate', 'family_name', 'preferred_username'];
+  //const signUpAttributes = ['birthdate', 'family_name', 'preferred_username'];
 
   return (
     <Authenticator

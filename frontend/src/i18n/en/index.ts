@@ -23,26 +23,16 @@ const translation = {
         mustAgreeUsageRules: "You must agree to abide by the Usage Rules",
       },
       viewRules: "View Usage Rules",
+      viewTerms: "View User Aggreement",
     },
     common: {
-      backToHome: "Back to Home",
+      backToHome: "Back to Login & Signup",
+    },
+    usrAgreement: {
+      pageTitle: "Master Agreement for this Research Platform",
     },
     usageRules: {
       pageTitle: "Usage Rules",
-      section1: {
-        title: "General Guidelines",
-        content: "Please use our platform responsibly and respect other users.",
-      },
-      section2: {
-        title: "Content Policy",
-        content: "Do not post or share any illegal, harmful, or offensive content.",
-      },
-      section3: {
-        title: "User Responsibilities",
-        item1: "Maintain the confidentiality of your account",
-        item2: "Report any suspicious activities",
-        item3: "Keep your personal information up to date",
-      },
       agreeButton: "I Agree to the Usage Rules",
       agreedMessage: "You have agreed to the usage rules. Redirecting to the main page...",
     },
