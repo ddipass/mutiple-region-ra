@@ -7,8 +7,7 @@ import {
   useAuthenticator, 
   useTheme, 
   CheckboxField, 
-  Heading,
-  Text
+  Heading
 } from '@aws-amplify/ui-react';
 
 const MISTRAL_ENABLED: boolean =
@@ -21,7 +20,6 @@ type Props = BaseProps & {
 
 const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
   const { t } = useTranslation();
-  const { tokens } = useTheme();
   const { signOut } = useAuthenticator();
 
   const components = {
@@ -86,16 +84,41 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
     },
   };
 
+  const formFields = {
+     signUp: {
+       email: {
+         order:1
+       },
+       family_name: {
+         order: 2
+       },
+       preferred_username: {
+         order: 4
+       },
+       birthdate: {
+         order: 3
+       },
+       password: {
+         order: 5
+       },
+       confirm_password: {
+         order: 6
+       }
+     },
+  };
+
+  const signUpAttributes={['birthdate', 'family_name', 'preferred_username']};
+
   return (
     <Authenticator
       socialProviders={socialProviders}
       initialState="signUp"
       components={components}
       services={services}
+      formFields={formFields} 
+      signUpAttributes={signUpAttributes}
     >
-      {({ signOut, user }) => (
-        <>{cloneElement(children as ReactElement, { signOut, user })}</>
-      )}
+      <>{cloneElement(children as ReactElement, { signOut })}</>
     </Authenticator>
   );
 };
