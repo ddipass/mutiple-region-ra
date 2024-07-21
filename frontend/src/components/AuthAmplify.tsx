@@ -5,7 +5,7 @@ import { SocialProvider } from '../@types/auth';
 import { 
   Authenticator, 
   useAuthenticator, 
-  CheckboxField
+  CheckboxField,
   ThemeProvider,
   Theme,
   useTheme,
