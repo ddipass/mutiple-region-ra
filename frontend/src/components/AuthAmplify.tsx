@@ -6,8 +6,6 @@ import {
   Authenticator, 
   useAuthenticator, 
   CheckboxField,
-  ThemeProvider,
-  Theme,
   useTheme,
   View,
   Text
