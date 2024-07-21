@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Button from './Button';
 import { PiList, PiSignOut, PiTranslate, PiTrash } from 'react-icons/pi';
-import { Link, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import DialogSelectLanguage from './DialogSelectLanguage';
 import { BaseProps } from '../@types/common';
 import DialogConfirmClearConversations from './DialogConfirmClearConversations';
 import useConversation from '../hooks/useConversation';
 import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
+import { fetchAuthSession } from 'aws-amplify/auth';
 
 type Props = BaseProps & {
   onSignOut: () => void;
