@@ -51,7 +51,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
           </div>
         ),
         SignIn: {
-          FormFields() {
+          FormFields: () => {
             const { validationErrors } = useAuthenticator();
             return (
               <>
@@ -75,7 +75,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
           },
         },
         SignUp: {
-          FormFields() {
+          FormFields: () => {
             const { validationErrors } = useAuthenticator();
             return (
               <>
