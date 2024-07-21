@@ -2,7 +2,7 @@ import App from './App.tsx';
 import ChatPage from './pages/ChatPage.tsx';
 import NotFound from './pages/NotFound.tsx';
 import UsageRules from './pages/UsageRules.tsx'; // 导入 UsageRules 组件
-import usrAgreement from './pages/usrAgreement.tsx'; // 导入 usrAgreement 组件
+import UsrAgreement from './pages/UsrAgreement.tsx'; // 导入 UsrAgreement 组件
 import BotExplorePage from './pages/BotExplorePage.tsx';
 import BotEditPage from './pages/BotEditPage.tsx';
 import BotApiSettingsPage from './pages/BotApiSettingsPage.tsx';
@@ -29,7 +29,7 @@ const rootChildren = [
   },  
   {
     path: '/agreement',
-    element: <usrAgreement />,
+    element: <UsrAgreement />,
   },  
   {
     path: '/bot/explore',

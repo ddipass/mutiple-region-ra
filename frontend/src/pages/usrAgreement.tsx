@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import { PiCheckCircle, PiArrowLeft } from 'react-icons/pi';
 import ChatMessageMarkdown from '../components/ChatMessageMarkdown';
 
-const usrAgreement: React.FC = () => {
+const UsrAgreement: React.FC = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [agreed, setAgreed] = useState(false);
@@ -62,4 +62,4 @@ const usrAgreement: React.FC = () => {
   );
 };
 
-export default usrAgreement;
+export default UsrAgreement;
