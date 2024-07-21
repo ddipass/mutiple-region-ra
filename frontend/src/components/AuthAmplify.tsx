@@ -6,6 +6,10 @@ import {
   Authenticator, 
   useAuthenticator, 
   CheckboxField
+  ThemeProvider,
+  Theme,
+  useTheme,
+  View,
 } from '@aws-amplify/ui-react';
 
 const MISTRAL_ENABLED: boolean =
@@ -29,38 +33,56 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
       );
     },
     SignIn: {
-      Footer() {
+      FormFields() {
+        const { validationErrors } = useAuthenticator();
         return (
-          <CheckboxField
-            name="usagerules"
-            value="yes"
-            label={
-              <>
-                {t('auth.agreeUsageRules')} 
-                <a href="/usage-rules" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
-                  {t('auth.viewRules')}
-                </a>
-              </>
-            }
-          />
+          <>
+            {/* Re-use default `Authenticator.SignIn.FormFields` */}
+            <Authenticator.SignIn.FormFields />
+
+            {/* Append & require Terms and Conditions field to sign in  */}
+            <CheckboxField
+              errorMessage={validationErrors.usagerules as string}
+              hasError={!!validationErrors.usagerules}
+              name="usagerules"
+              value="yes"
+              label={
+                <>
+                  {t('auth.agreeUsageRules')} 
+                  <a href="/usage-rules" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
+                    {t('auth.viewRules')}
+                  </a>
+                </>
+              }
+            />
+          </>
         );
       },
     },
     SignUp: {
-      Footer() {
+      FormFields() {
+        const { validationErrors } = useAuthenticator();
         return (
-          <CheckboxField
-            name="acknowledgement"
-            value="yes"
-            label={
-              <>
-                {t('auth.agreeTerms')} 
-                <a href="/agreement" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
-                  {t('auth.viewTerms')}
-                </a>
-              </>
-            }
-          />
+          <>
+            {/* Re-use default `Authenticator.SignUp.FormFields` */}
+            <Authenticator.SignUp.FormFields />
+
+            {/* Append & require Terms and Conditions field to sign in  */}
+            <CheckboxField
+              errorMessage={validationErrors.acknowledgement as string}
+              hasError={!!validationErrors.acknowledgement}
+              name="acknowledgement"
+              value="yes"
+              label={
+                <>
+                  {t('auth.agreeTerms')} 
+                  <a href="/agreement" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
+                    {t('auth.viewTerms')}
+                  </a>
+                </>
+              }
+            />
+          </>
         );
       },
     },
@@ -88,33 +110,74 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
        email: {
          order:1
        },
-       family_name: {
-         order: 2
-       },
-       birthdate: {
-         order: 3
+       phone_number: {
+         dialCodeList: ['+86', '+852', '+1']
        },
        password: {
-         order: 4
+         order: 3
        },
        confirm_password: {
-         order: 5
+         order: 4
        }
      },
   };
 
-  //const signUpAttributes = ['birthdate', 'family_name', 'preferred_username'];
+
+  const { tokens } = useTheme();
+
+  const mytheme: Theme = {
+    name: 'Auth Example Theme',
+    tokens: {
+      components: {
+        authenticator: {
+          router: {
+            boxShadow: `0 0 16px ${tokens.colors.overlay['10']}`,
+            borderWidth: '0',
+          },
+          form: {
+            padding: `${tokens.space.medium} ${tokens.space.xl} ${tokens.space.medium}`,
+          },
+        },
+        button: {
+          primary: {
+            backgroundColor: tokens.colors.neutral['100'],
+          },
+          link: {
+            color: tokens.colors.purple['80'],
+          },
+        },
+        fieldcontrol: {
+          _focus: {
+            boxShadow: `0 0 0 2px ${tokens.colors.purple['60']}`,
+          },
+        },
+        tabs: {
+          item: {
+            color: tokens.colors.neutral['80'],
+            _active: {
+              borderColor: tokens.colors.neutral['100'],
+              color: tokens.colors.purple['100'],
+            },
+          },
+        },
+      },
+    },
+  };
 
   return (
-    <Authenticator
-      socialProviders={socialProviders}
-      initialState="signUp"
-      components={components}
-      services={services}
-      formFields={formFields} 
-    >
-      <>{cloneElement(children as ReactElement, { signOut })}</>
-    </Authenticator>
+    <ThemeProvider theme={mytheme}>
+      <View padding="xxl">
+        <Authenticator
+          socialProviders={socialProviders}
+          initialState="signIn"
+          components={components}
+          services={services}
+          formFields={formFields} 
+        >
+          <>{cloneElement(children as ReactElement, { signOut })}</>
+        </Authenticator>
+      </View>
+    </ThemeProvider>
   );
 };
 

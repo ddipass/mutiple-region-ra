@@ -33,30 +33,44 @@ const UsageRules: React.FC = () => {
   }, [navigate]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Link to="/login" className="flex items-center text-aws-sea-blue hover:underline mb-4">
-        <PiArrowLeft className="mr-2" />
-        {t('common.backToHome')}
-      </Link>
-      <h1 className="text-3xl font-bold mb-6 text-aws-font-color">{t('usageRules.pageTitle')}</h1>
-      <ChatMessageMarkdown className="markdown-content" messageId="usage-rules">
-        {content}
-      </ChatMessageMarkdown>
-      <div className="mt-8 flex flex-col items-center">
-        {!agreed ? (
-          <Button
-            onClick={handleAgree}
-            icon={<PiCheckCircle />}
-            className="bg-aws-sea-blue text-white"
-          >
-            {t('usageRules.agreeButton')}
-          </Button>
-        ) : (
-          <div className="flex items-center text-green-600">
-            <PiCheckCircle className="mr-2" />
-            <span>{t('usageRules.agreedMessage')}</span>
+    <div className="relative flex h-full flex-1 flex-col">
+      {/* 1. 顶部区域 */}
+      <div className="sticky top-0 z-10 mb-1.5 flex h-14 w-full items-center border-b border-gray bg-aws-paper p-2">
+        <Link to="/login" className="flex items-center text-aws-sea-blue hover:underline">
+          <PiArrowLeft className="mr-2" />
+          {t('common.backToHome')}
+        </Link>
+      </div>
+
+      {/* 2. 内容区域 */}
+      <section className="relative h-full w-full flex-1 overflow-auto pb-9">
+        <div className="h-full">
+          <div className="flex h-full flex-col overflow-auto pb-16">
+            <ChatMessageMarkdown className="markdown-content" messageId="usage-rules">
+              {content}
+            </ChatMessageMarkdown>
           </div>
-        )}
+        </div>
+      </section>
+
+      {/* 3. 底部区域 */}
+      <div className="bottom-0 z-0 flex w-full flex-col items-center justify-center">
+        <div className="mt-8 flex flex-col items-center">
+          {!agreed ? (
+            <Button
+              onClick={handleAgree}
+              icon={<PiCheckCircle />}
+              className="bg-aws-sea-blue text-white"
+            >
+              {t('usageRules.agreeButton')}
+            </Button>
+          ) : (
+            <div className="flex items-center text-green-600">
+              <PiCheckCircle className="mr-2" />
+              <span>{t('usageRules.agreedMessage')}</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

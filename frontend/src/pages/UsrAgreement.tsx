@@ -14,7 +14,7 @@ const UsrAgreement: React.FC = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const response = await fetch(`/content/user-agreement-${i18n.language}.md`);
+        const response = await fetch(`/user-agreement.md`);
         const text = await response.text();
         setContent(text);
       } catch (error) {
@@ -33,16 +33,29 @@ const UsrAgreement: React.FC = () => {
   }, [navigate]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Link to="/" className="flex items-center text-aws-sea-blue hover:underline mb-4">
-        <PiArrowLeft className="mr-2" />
-        {t('common.backToHome')}
-      </Link>
-      <h1 className="text-3xl font-bold mb-6 text-aws-font-color">{t('usrAgreement.pageTitle')}</h1>
-      <ChatMessageMarkdown className="markdown-content" messageId="user-agreement">
-        {content}
-      </ChatMessageMarkdown>
-      <div className="mt-8 flex flex-col items-center">
+    <div className="relative flex h-full flex-1 flex-col">
+      {/* 1. 顶部区域 */}
+      <div className="sticky top-0 z-10 mb-1.5 flex h-14 w-full items-center justify-between border-b border-gray bg-aws-paper p-2">
+        <Link to="/" className="flex items-center text-aws-sea-blue hover:underline">
+          <PiArrowLeft className="mr-2" />
+          {t('common.backToHome')}
+        </Link>
+        <h1 className="text-xl font-bold text-aws-font-color">{t('usrAgreement.pageTitle')}</h1>
+      </div>
+
+      {/* 2. 内容区域 */}
+      <section className="relative h-full w-full flex-1 overflow-auto pb-9">
+        <div className="h-full">
+          <div className="flex h-full flex-col overflow-auto pb-16 px-4">
+            <ChatMessageMarkdown className="markdown-content" messageId="user-agreement">
+              {content}
+            </ChatMessageMarkdown>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. 底部区域 */}
+      <div className="bottom-0 z-0 flex w-full flex-col items-center justify-center p-4">
         {!agreed ? (
           <Button
             onClick={handleAgree}
