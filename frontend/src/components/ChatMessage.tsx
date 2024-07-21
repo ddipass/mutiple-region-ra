@@ -205,7 +205,12 @@ const ChatMessage: React.FC<Props> = (props) => {
                     return (
                       <React.Fragment key={idx}>
                         {content.body.split('\n').map((c, idxBody) => (
-                          <div key={idxBody}>{c}</div>
+                          <div 
+                                key={idxBody} 
+                                className="break-words whitespace-pre-wrap break-all max-w-full"
+                          >
+                          {c}
+                          </div>
                         ))}
                       </React.Fragment>
                     );
