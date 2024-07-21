@@ -1,9 +1,11 @@
 import React, { ReactNode, cloneElement, ReactElement } from 'react';
 import { BaseProps } from '../@types/common';
-import { Authenticator } from '@aws-amplify/ui-react';
 import { useTranslation } from 'react-i18next';
-import { useAuthenticator } from '@aws-amplify/ui-react';
 import { SocialProvider } from '../@types/auth';
+import { Authenticator } from '@aws-amplify/ui-react';
+import { CheckboxField } from '@aws-amplify/ui-react';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+
 
 const MISTRAL_ENABLED: boolean =
   import.meta.env.VITE_APP_ENABLE_MISTRAL === 'true';
@@ -15,6 +17,7 @@ type Props = BaseProps & {
 
 const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
   const { t } = useTranslation();
+  const { signOut } = useAuthenticator();
 
   return (
     <Authenticator
@@ -83,8 +86,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
             };
           }
         },
-      }}
-    >
+      }}>
       <>{cloneElement(children as ReactElement, { signOut })}</>
     </Authenticator>
   );
