@@ -10,6 +10,7 @@ import {
   Theme,
   useTheme,
   View,
+  Text
 } from '@aws-amplify/ui-react';
 
 const MISTRAL_ENABLED: boolean =
@@ -25,7 +26,6 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
   const { signOut } = useAuthenticator();
 
   const components = {
- 
     Header() {
       const { tokens } = useTheme();
       return (
@@ -40,7 +40,6 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
         </View>
       );
     },
-
     Footer() {
       const { tokens } = useTheme();
       return (
@@ -57,16 +56,6 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
         const { toForgotPassword } = useAuthenticator();        
         return (
           <>
-            <View textAlign="center">
-              <Button
-                fontWeight="normal"
-                onClick={toForgotPassword}
-                size="small"
-                variation="link"
-              >
-                Reset Password
-              </Button>
-            </View>
             {/* Append & require Terms and Conditions field to sign in  */}
             <CheckboxField
               errorMessage={validationErrors.usagerules as string}
