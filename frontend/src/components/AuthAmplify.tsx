@@ -25,21 +25,48 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
   const { signOut } = useAuthenticator();
 
   const components = {
+ 
     Header() {
+      const { tokens } = useTheme();
       return (
+        <View textAlign="center" padding={tokens.space.large}>
           <div className="mb-5 mt-10 flex justify-center text-3xl text-aws-font-color">
             {!MISTRAL_ENABLED ? t('app.name') : t('app.nameWithoutClaude')}
           </div>
+          {/* <Image
+            alt="Amplify logo"
+            src="https://docs.amplify.aws/assets/logo-dark.svg"
+          /> */}
+        </View>
+      );
+    },
+
+    Footer() {
+      const { tokens } = useTheme();
+      return (
+        <View textAlign="center" padding={tokens.space.large}>
+          <Text color={tokens.colors.neutral[80]}>
+            &copy; All Rights Reserved
+          </Text>
+        </View>
       );
     },
     SignIn: {
-      FormFields() {
+      Footer() {
         const { validationErrors } = useAuthenticator();
+        const { toForgotPassword } = useAuthenticator();        
         return (
           <>
-            {/* Re-use default `Authenticator.SignIn.FormFields` */}
-            <Authenticator.SignIn.FormFields />
-
+            <View textAlign="center">
+              <Button
+                fontWeight="normal"
+                onClick={toForgotPassword}
+                size="small"
+                variation="link"
+              >
+                Reset Password
+              </Button>
+            </View>
             {/* Append & require Terms and Conditions field to sign in  */}
             <CheckboxField
               errorMessage={validationErrors.usagerules as string}
