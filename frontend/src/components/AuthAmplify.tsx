@@ -52,8 +52,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
     },
     SignIn: {
       Footer() {
-        const { validationErrors } = useAuthenticator();
-        const { toForgotPassword } = useAuthenticator();        
+        const { validationErrors } = useAuthenticator();    
         return (
           <>
             {/* Append & require Terms and Conditions field to sign in  */}
