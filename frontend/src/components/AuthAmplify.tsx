@@ -107,7 +107,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
      },
   };
 
-  const signUpAttributes={['birthdate', 'family_name', 'preferred_username']};
+  const signUpAttributes = ['birthdate', 'family_name', 'preferred_username'];
 
   return (
     <Authenticator
