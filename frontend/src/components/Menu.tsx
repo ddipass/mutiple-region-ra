@@ -72,11 +72,11 @@ const Menu: React.FC<Props> = (props) => {
   return (
     <>
 
-      <Link
-        to="/setting"
-        className="relative bg-aws-squid-ink">
-        <span>{email}</span>
-      </Link>
+      <div className="relative bg-aws-squid-ink">
+        <a href="/" target="_blank">
+          <span>{email}</span>
+        </a>
+      </div>
       <Button
         ref={buttonRef}
         className="relative bg-aws-squid-ink"
