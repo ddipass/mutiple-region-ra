@@ -46,9 +46,15 @@ const UsageRules: React.FC = () => {
       <section className="relative h-full w-full flex-1 overflow-auto pb-9">
         <div className="h-full">
           <div className="flex h-full flex-col overflow-auto pb-16">
-            <ChatMessageMarkdown className="markdown-content" messageId="usage-rules">
-              {content}
-            </ChatMessageMarkdown>
+            <div className="grid grid-cols-12 gap-2 p-3">
+              <div className="order-first col-span-12 flex lg:order-none lg:col-span-8 lg:col-start-3">
+                <div className="ml-5 grow ">
+                    <ChatMessageMarkdown className="markdown-content" messageId="usage-rules">
+                      {content}
+                    </ChatMessageMarkdown>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

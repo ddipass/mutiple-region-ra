@@ -1,12 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Button from './Button';
 import { PiList, PiSignOut, PiTranslate, PiTrash } from 'react-icons/pi';
-import { useTranslation } from 'react-i18next';
+import { Link, useTranslation } from 'react-i18next';
 import DialogSelectLanguage from './DialogSelectLanguage';
 import { BaseProps } from '../@types/common';
 import DialogConfirmClearConversations from './DialogConfirmClearConversations';
 import useConversation from '../hooks/useConversation';
 import { useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
 
 type Props = BaseProps & {
   onSignOut: () => void;
@@ -58,8 +59,23 @@ const Menu: React.FC<Props> = (props) => {
     []
   );
 
+  // 第一引数は不要だが、ないとリクエストされないため 'user' 文字列を入れる
+  const { data } = useSWR('user', () => {
+    return fetchAuthSession();
+  });
+
+  const email = useMemo<string>(() => {
+    return (data?.tokens?.idToken?.payload.email ?? '') as string;
+  }, [data]); 
+
   return (
     <>
+
+      <Link
+        to="/setting"
+        className="relative bg-aws-squid-ink">
+        <span>{email}</span>
+      </Link>
       <Button
         ref={buttonRef}
         className="relative bg-aws-squid-ink"
@@ -75,6 +91,18 @@ const Menu: React.FC<Props> = (props) => {
         <div
           ref={menuRef}
           className="absolute bottom-10 left-2 w-60 rounded border border-aws-font-color-white bg-aws-sea-blue text-aws-font-color-white">
+          <div className="flex w-full cursor-pointer items-center p-2 hover:bg-aws-sea-blue-hover">
+            <PiTranslate className="mr-2" />
+            <a href="/usage-rules" target="_blank">
+              {t('auth.viewRules')}
+            </a>
+          </div>
+          <div className="flex w-full cursor-pointer items-center p-2 hover:bg-aws-sea-blue-hover">
+            <PiTranslate className="mr-2" />
+            <a href="/agreement" target="_blank">
+              {t('auth.viewTerms')}
+            </a>
+          </div>
           <div
             className="flex w-full cursor-pointer items-center p-2 hover:bg-aws-sea-blue-hover"
             onClick={() => {

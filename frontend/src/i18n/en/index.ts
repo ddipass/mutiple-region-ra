@@ -19,11 +19,11 @@ const translation = {
       agreeTerms: "I agree with the Terms and Conditions",
       agreeUsageRules: "I agree to abide by the Usage Rules",
       errors: {
-        mustAgreeTerms: "You must agree to the Terms and Conditions",
-        mustAgreeUsageRules: "You must agree to abide by the Usage Rules",
+        mustAgreeTerms: "You must agree to the Terms and Conditions as described in ",
+        mustAgreeUsageRules: "You must agree to abide by the Usage Rules ",
       },
-      viewRules: "View Usage Rules",
-      viewTerms: "View User Aggreement",
+      viewRules: "Usage Rules (View)",
+      viewTerms: "User Aggreement (View)",
     },
     common: {
       backToHome: "Back to Login & Signup",

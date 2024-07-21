@@ -10,6 +10,7 @@ import {
   View,
   Text
 } from '@aws-amplify/ui-react';
+import { useLocation } from 'react-router-dom';
 
 const MISTRAL_ENABLED: boolean =
   import.meta.env.VITE_APP_ENABLE_MISTRAL === 'true';
@@ -20,6 +21,14 @@ type Props = BaseProps & {
 };
 
 const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
+
+  const location = useLocation();
+
+  // 检查当前路径是否是 /usage-rules /agreement
+  if (location.pathname === '/usage-rules' || location.pathname === '/agreement') {
+    return <>{children}</>;
+  }
+
   const { t } = useTranslation();
   const { signOut } = useAuthenticator();
 
@@ -41,30 +50,6 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
         </View>
       );
     },
-    SignIn: {
-      Footer() {
-        const { validationErrors } = useAuthenticator();    
-        return (
-          <>
-            {/* Append & require Terms and Conditions field to sign in  */}
-            <CheckboxField
-              errorMessage={validationErrors.usagerules as string}
-              hasError={!!validationErrors.usagerules}
-              name="usagerules"
-              value="yes"
-              label={
-                <>
-                  {t('auth.agreeUsageRules')} 
-                  <a href="/usage-rules" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
-                    {t('auth.viewRules')}
-                  </a>
-                </>
-              }
-            />
-          </>
-        );
-      },
-    },
     SignUp: {
       FormFields() {
         const { validationErrors } = useAuthenticator();
@@ -82,7 +67,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
               label={
                 <>
                   {t('auth.agreeTerms')} 
-                  <a href="/agreement" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
+                  <a href="/agreement" target="_blank">
                     {t('auth.viewTerms')}
                   </a>
                 </>
@@ -95,13 +80,6 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
   };
 
   const services = {
-    async validateCustomSignIn(formData: Record<string, any>) {
-      if (!formData.usagerules) {
-        return {
-          usagerules: t('auth.errors.mustAgreeUsageRules'),
-        };
-      }
-    },
     async validateCustomSignUp(formData: Record<string, any>) {
       if (!formData.acknowledgement) {
         return {
