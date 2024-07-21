@@ -29,7 +29,7 @@ const rootChildren = [
   },  
   {
     path: '/agreement',
-    element: <Agreement />,
+    element: <usrAgreement />,
   },  
   {
     path: '/bot/explore',

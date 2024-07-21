@@ -5,8 +5,7 @@ import { SocialProvider } from '../@types/auth';
 import { 
   Authenticator, 
   useAuthenticator, 
-  CheckboxField, 
-  Heading
+  CheckboxField
 } from '@aws-amplify/ui-react';
 
 const MISTRAL_ENABLED: boolean =

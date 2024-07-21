@@ -38,7 +38,7 @@ const usrAgreement: React.FC = () => {
         <PiArrowLeft className="mr-2" />
         {t('common.backToHome')}
       </Link>
-      <h1 className="text-3xl font-bold mb-6 text-aws-font-color">{t('agreement.pageTitle')}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-aws-font-color">{t('usrAgreement.pageTitle')}</h1>
       <ChatMessageMarkdown className="markdown-content" messageId="user-agreement">
         {content}
       </ChatMessageMarkdown>
@@ -49,12 +49,12 @@ const usrAgreement: React.FC = () => {
             icon={<PiCheckCircle />}
             className="bg-aws-sea-blue text-white"
           >
-            {t('agreement.agreeButton')}
+            {t('usrAgreement.agreeButton')}
           </Button>
         ) : (
           <div className="flex items-center text-green-600">
             <PiCheckCircle className="mr-2" />
-            <span>{t('agreement.agreedMessage')}</span>
+            <span>{t('usrAgreement.agreedMessage')}</span>
           </div>
         )}
       </div>

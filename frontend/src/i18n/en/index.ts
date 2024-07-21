@@ -30,6 +30,8 @@ const translation = {
     },
     usrAgreement: {
       pageTitle: "Master Agreement for this Research Platform",
+      agreeButton: "I Agree",
+      agreedMessage: "You have agreed to the user agreement",
     },
     usageRules: {
       pageTitle: "Usage Rules",
