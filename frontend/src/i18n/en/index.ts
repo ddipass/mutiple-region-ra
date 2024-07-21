@@ -28,7 +28,7 @@ const translation = {
       backToHome: "Back to Home",
     },
     usageRules: {
-      title: "Usage Rules",
+      pageTitle: "Usage Rules",
       section1: {
         title: "General Guidelines",
         content: "Please use our platform responsibly and respect other users.",
