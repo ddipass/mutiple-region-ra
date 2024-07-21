@@ -27,17 +27,10 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
 
   const components = {
     Header() {
-      const { tokens } = useTheme();
       return (
-        <View textAlign="center" padding={tokens.space.large}>
-          <div className="mb-5 mt-10 flex justify-center text-3xl text-aws-font-color">
-            {!MISTRAL_ENABLED ? t('app.name') : t('app.nameWithoutClaude')}
-          </div>
-          {/* <Image
-            alt="Amplify logo"
-            src="https://docs.amplify.aws/assets/logo-dark.svg"
-          /> */}
-        </View>
+        <div className="mb-5 mt-10 flex justify-center text-3xl text-aws-font-color">
+          {!MISTRAL_ENABLED ? t('app.name') : t('app.nameWithoutClaude')}
+        </div>
       );
     },
     Footer() {
@@ -137,62 +130,16 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
      },
   };
 
-
-  const { tokens } = useTheme();
-
-  const mytheme: Theme = {
-    name: 'Auth Example Theme',
-    tokens: {
-      components: {
-        authenticator: {
-          router: {
-            boxShadow: `0 0 16px ${tokens.colors.overlay['10']}`,
-            borderWidth: '0',
-          },
-          form: {
-            padding: `${tokens.space.medium} ${tokens.space.xl} ${tokens.space.medium}`,
-          },
-        },
-        button: {
-          primary: {
-            backgroundColor: tokens.colors.neutral['100'],
-          },
-          link: {
-            color: tokens.colors.purple['80'],
-          },
-        },
-        fieldcontrol: {
-          _focus: {
-            boxShadow: `0 0 0 2px ${tokens.colors.purple['60']}`,
-          },
-        },
-        tabs: {
-          item: {
-            color: tokens.colors.neutral['80'],
-            _active: {
-              borderColor: tokens.colors.neutral['100'],
-              color: tokens.colors.purple['100'],
-            },
-          },
-        },
-      },
-    },
-  };
-
   return (
-    <ThemeProvider theme={mytheme}>
-      <View padding="xxl">
-        <Authenticator
-          socialProviders={socialProviders}
-          initialState="signIn"
-          components={components}
-          services={services}
-          formFields={formFields} 
-        >
-          <>{cloneElement(children as ReactElement, { signOut })}</>
-        </Authenticator>
-      </View>
-    </ThemeProvider>
+    <Authenticator
+      socialProviders={socialProviders}
+      initialState="signIn"
+      components={components}
+      services={services}
+      formFields={formFields} 
+    >
+      <>{cloneElement(children as ReactElement, { signOut })}</>
+    </Authenticator>
   );
 };
 
