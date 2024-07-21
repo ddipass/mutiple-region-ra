@@ -5,7 +5,6 @@ import { SocialProvider } from '../@types/auth';
 import { 
   Authenticator, 
   useAuthenticator, 
-  useTheme, 
   CheckboxField, 
   Heading
 } from '@aws-amplify/ui-react';
@@ -107,7 +106,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
      },
   };
 
-  const signUpAttributes = ['birthdate', 'family_name', 'preferred_username'];
+  // const signUpAttributes = ['birthdate', 'family_name', 'preferred_username'];
 
   return (
     <Authenticator
@@ -116,7 +115,6 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
       components={components}
       services={services}
       formFields={formFields} 
-      signUpAttributes={signUpAttributes}
     >
       <>{cloneElement(children as ReactElement, { signOut })}</>
     </Authenticator>
