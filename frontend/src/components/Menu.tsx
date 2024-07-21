@@ -8,7 +8,7 @@ import DialogConfirmClearConversations from './DialogConfirmClearConversations';
 import useConversation from '../hooks/useConversation';
 import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
-import { fetchAuthSession } from '@aws-amplify/auth';
+import fetchAuthSession from '@aws-amplify/auth';
 
 type Props = BaseProps & {
   onSignOut: () => void;
