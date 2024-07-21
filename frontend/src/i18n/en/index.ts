@@ -15,6 +15,37 @@ const translation = {
       chatWaitingSymbol: '▍',
       adminConsoles: 'Admin Only',
     },
+    auth: {
+      agreeTerms: "I agree with the Terms and Conditions",
+      agreeUsageRules: "I agree to abide by the Usage Rules",
+      errors: {
+        mustAgreeTerms: "You must agree to the Terms and Conditions",
+        mustAgreeUsageRules: "You must agree to abide by the Usage Rules",
+      },
+      viewRules: "View Usage Rules",
+    },
+    common: {
+      backToHome: "Back to Home",
+    },
+    usageRules: {
+      title: "Usage Rules",
+      section1: {
+        title: "General Guidelines",
+        content: "Please use our platform responsibly and respect other users.",
+      },
+      section2: {
+        title: "Content Policy",
+        content: "Do not post or share any illegal, harmful, or offensive content.",
+      },
+      section3: {
+        title: "User Responsibilities",
+        item1: "Maintain the confidentiality of your account",
+        item2: "Report any suspicious activities",
+        item3: "Keep your personal information up to date",
+      },
+      agreeButton: "I Agree to the Usage Rules",
+      agreedMessage: "You have agreed to the usage rules. Redirecting to the main page...",
+    },
     agent: {
       label: 'Agent',
       help: {

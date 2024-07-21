@@ -47,7 +47,8 @@ const App: React.FC = () => {
   });
 
   I18n.putVocabularies(translations);
-  I18n.setLanguage(i18n.language);
+  // I18n.setLanguage(i18n.language);
+  I18n.setLanguage('en');
 
   return (
     <ErrorBoundary fallback={<ErrorFallback />}>
