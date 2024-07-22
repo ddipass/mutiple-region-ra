@@ -109,23 +109,23 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
     },
   };
 
-  const formFields = {
-     signUp: {
-       email: {
-         order:1
-       },
-       phone_number: {
-         order:2,
-         dialCodeList: ['+86', '+852', '+1']
-       },
-       password: {
-         order: 3
-       },
-       confirm_password: {
-         order: 4
-       }
-     },
-  };
+  // const formFields = {
+  //    signUp: {
+  //      email: {
+  //        order:1
+  //      },
+  //      phone_number: {
+  //        order:2,
+  //        dialCodeList: ['+86', '+852', '+1']
+  //      },
+  //      password: {
+  //        order: 3
+  //      },
+  //      confirm_password: {
+  //        order: 4
+  //      }
+  //    },
+  // };
 
   return (
     <Authenticator
@@ -133,7 +133,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
       initialState="signIn"
       components={components}
       services={services}
-      formFields={formFields} 
+      // formFields={formFields} 
     >
       <>{cloneElement(children as ReactElement, { signOut })}</>
     </Authenticator>
