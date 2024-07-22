@@ -17,12 +17,20 @@ const MISTRAL_ENABLED: boolean =
 type Props = BaseProps & {
   socialProviders: SocialProvider[];
   children: ReactNode;
+  onSignOut?: () => void; // 添加这个属性
 };
 
-const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
+const AuthAmplify: React.FC<Props> = ({ socialProviders, children, onSignOut }) => {
 
   const { t } = useTranslation();
   const { signOut } = useAuthenticator();
+
+  const handleSignOut = () => {
+    signOut();
+    if (onSignOut) {
+      onSignOut();
+    }
+  };
 
   const components = {
     Header() {
@@ -44,15 +52,11 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
     },
     SignUp: {
       FormFields() {
-        const { validationErrors, updateFormData } = useAuthenticator();
+        const { validationErrors } = useAuthenticator();
         const [isChecked, setIsChecked] = useState(false);
 
-        const handleCheckboxChange = (event) => {
-          const newCheckedState = event.target.checked;
-          setIsChecked(newCheckedState);
-          updateFormData({
-            acknowledgement: newCheckedState ? 'yes' : '',
-          });
+        const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+          setIsChecked(event.target.checked);
         };
 
         return (
@@ -116,7 +120,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
       services={services}
       formFields={formFields} 
     >
-      <>{cloneElement(children as ReactElement, { signOut })}</>
+      <>{cloneElement(children as ReactElement, { signOut: handleSignOut })}</>
     </Authenticator>
   );
 };
