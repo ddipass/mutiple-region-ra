@@ -22,9 +22,13 @@ const ViewTermsButton = () => {
     window.open('/agreement', '_blank');
   };
 
+  const { t } = useTranslation();
+  const { signOut } = useAuthenticator();
+
   return (
     <Button onClick={handleViewTerms} variation="link">
       {t('auth.viewTerms')}
+      <>{cloneElement(children as ReactElement, { signOut })}</>
     </Button>
   );
 };
@@ -38,7 +42,6 @@ type Props = BaseProps & {
 
 const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
 
-  const { t } = useTranslation();
   const { signOut } = useAuthenticator();
 
   const components = {
