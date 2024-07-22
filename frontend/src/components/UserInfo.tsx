@@ -14,7 +14,7 @@ interface UserData {
 }
 
 // 自定义 hook 用于获取用户信息
-export const useUserInfo = () => {
+export const useUserInfo = (): { user: UserData | null; loading: boolean; error: string | null } => {
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
