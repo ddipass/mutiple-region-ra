@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Auth } from 'aws-amplify';
+import { useState, useEffect } from 'react';
 
 interface UserData {
   username: string;

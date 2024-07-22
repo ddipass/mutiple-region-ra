@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Button from './Button';
 import { PiList, PiSignOut, PiTranslate, PiTrash } from 'react-icons/pi';
 import { useTranslation } from 'react-i18next';
@@ -60,7 +60,7 @@ const Menu: React.FC<Props> = (props) => {
   );
 
   // get user information
-  const { user, loading, error } = useUserInfo();
+  const { user } = useUserInfo();
 
   return (
     <>
