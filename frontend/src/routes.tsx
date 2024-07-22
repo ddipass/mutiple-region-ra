@@ -15,6 +15,8 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { useMemo } from 'react';
+import UsageRules from './pages/UsageRules';
+import UsrAgreement from './pages/UsrAgreement';
 
 const rootChildren = [
   {
