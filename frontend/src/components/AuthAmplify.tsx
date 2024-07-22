@@ -29,12 +29,10 @@ const ViewTermsButton = () => {
   };
 
   const { t } = useTranslation();
-  const { signOut } = useAuthenticator();
-
+  
   return (
     <Button onClick={handleViewTerms} variation="link">
       {t('auth.viewTerms')}
-      <>{cloneElement(children as ReactElement, { signOut })}</>
     </Button>
   );
 };

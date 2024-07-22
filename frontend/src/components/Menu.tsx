@@ -1,120 +1,144 @@
-import React, { ReactNode, cloneElement, ReactElement, useState } from 'react';
-import { BaseProps } from '../@types/common';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import Button from './Button';
+import { PiList, PiSignOut, PiTranslate, PiTrash } from 'react-icons/pi';
 import { useTranslation } from 'react-i18next';
-import { SocialProvider } from '../@types/auth';
-import { 
-  Authenticator, 
-  useAuthenticator, 
-  CheckboxField,
-  useTheme,
-  View,
-  Text
-} from '@aws-amplify/ui-react';
-
-const MISTRAL_ENABLED: boolean =
-  import.meta.env.VITE_APP_ENABLE_MISTRAL === 'true';
+import DialogSelectLanguage from './DialogSelectLanguage';
+import { BaseProps } from '../@types/common';
+import DialogConfirmClearConversations from './DialogConfirmClearConversations';
+import useConversation from '../hooks/useConversation';
+import { useNavigate } from 'react-router-dom';
+import { useUserInfo } from './UserInfo';
 
 type Props = BaseProps & {
-  socialProviders: SocialProvider[];
-  children: ReactNode;
+  onSignOut: () => void;
 };
 
-const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
-
+// 認証時に表示するメニューコンポーネント
+const Menu: React.FC<Props> = (props) => {
   const { t } = useTranslation();
-  const { signOut } = useAuthenticator();
 
-  const components = {
-    Header() {
-      return (
-        <div className="mb-5 mt-10 flex justify-center text-3xl text-aws-font-color">
-          {!MISTRAL_ENABLED ? t('app.name') : t('app.nameWithoutClaude')}
-        </div>
-      );
-    },
-    Footer() {
-      const { tokens } = useTheme();
-      return (
-        <View textAlign="center" padding={tokens.space.large}>
-          <Text color={tokens.colors.neutral[80]}>
-            &copy; All Rights Reserved
-          </Text>
-        </View>
-      );
-    },
-    SignUp: {
-      FormFields() {
-        const { validationErrors } = useAuthenticator();
-        const [isChecked, setIsChecked] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenLangage, setIsOpenLangage] = useState(false);
+  const [isOpenClearConversation, setIsOpenClearConversation] = useState(false);
 
-        const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-          setIsChecked(event.target.checked);
-        };
+  const { clearConversations: clear } = useConversation();
+  const navigate = useNavigate();
 
-        return (
-          <>
-            <Authenticator.SignUp.FormFields />
-            <CheckboxField
-              errorMessage={validationErrors.acknowledgement as string}
-              hasError={!!validationErrors.acknowledgement}
-              name="acknowledgement"
-              value="yes"
-              checked={isChecked}
-              onChange={handleCheckboxChange}
-              label={
-                <>
-                  {t('auth.agreeTerms')} 
-                  <a href="/agreement" target="_blank">
-                    {t('auth.viewTerms')}
-                  </a>
-                </>
-              }
-            />
-          </>
-        );
-      },
-    },
-  };
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const services = {
-    async validateCustomSignUp(formData: Record<string, any>) {
-      if (!formData.acknowledgement) {
-        return {
-          acknowledgement: t('auth.errors.mustAgreeTerms'),
-        };
+  useEffect(() => {
+    // メニューの外側をクリックした際のハンドリング
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleClickOutside = (event: any) => {
+      // メニューボタンとメニュー以外をクリックしていたらメニューを閉じる
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !buttonRef.current?.contains(event.target)
+      ) {
+        setIsOpen(false);
       }
-    },
-  };
+    };
+    // イベントリスナーを設定
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      // 後処理でイベントリスナーを削除
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuRef]);
 
-  const formFields = {
-     signUp: {
-       email: {
-         order:1
-       },
-       phone_number: {
-         order:2,
-         dialCodeList: ['+86', '+852', '+1']
-       },
-       password: {
-         order: 3
-       },
-       confirm_password: {
-         order: 4
-       }
-     },
-  };
+  const clearConversations = useCallback(
+    () => {
+      clear().then(() => {
+        navigate('');
+        setIsOpenClearConversation(false);
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  // get user information
+  const { user } = useUserInfo();
 
   return (
-    <Authenticator
-      socialProviders={socialProviders}
-      initialState="signIn"
-      components={components}
-      services={services}
-      formFields={formFields} 
-    >
-      <>{cloneElement(children as ReactElement, { signOut })}</>
-    </Authenticator>
+    <>
+
+      <div className="relative bg-aws-squid-ink">
+        <a href="/" target="_blank">
+          <span>Email: {user?.email}</span>
+        </a>
+      </div>
+      <Button
+        ref={buttonRef}
+        className="relative bg-aws-squid-ink"
+        text
+        icon={<PiList />}
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}>
+        {t('button.menu')}
+      </Button>
+
+      {isOpen && (
+        <div
+          ref={menuRef}
+          className="absolute bottom-10 left-2 w-60 rounded border border-aws-font-color-white bg-aws-sea-blue text-aws-font-color-white">
+          <div className="flex w-full cursor-pointer items-center p-2 hover:bg-aws-sea-blue-hover">
+            <PiTranslate className="mr-2" />
+            <a href="/usage-rules" target="_blank">
+              {t('auth.viewRules')}
+            </a>
+          </div>
+          <div className="flex w-full cursor-pointer items-center p-2 hover:bg-aws-sea-blue-hover">
+            <PiTranslate className="mr-2" />
+            <a href="/agreement" target="_blank">
+              {t('auth.viewTerms')}
+            </a>
+          </div>
+          <div
+            className="flex w-full cursor-pointer items-center p-2 hover:bg-aws-sea-blue-hover"
+            onClick={() => {
+              setIsOpen(false);
+              setIsOpenLangage(true);
+            }}>
+            <PiTranslate className="mr-2" />
+            {t('button.language')}
+          </div>
+          <div
+            className="flex w-full cursor-pointer items-center p-2 hover:bg-aws-sea-blue-hover"
+            onClick={() => {
+              setIsOpen(false);
+              setIsOpenClearConversation(true);
+            }}>
+            <PiTrash className="mr-2" />
+            {t('button.clearConversation')}
+          </div>
+          <div
+            className="flex w-full cursor-pointer items-center border-t p-2 hover:bg-aws-sea-blue-hover"
+            onClick={props.onSignOut}>
+            <PiSignOut className="mr-2" />
+            {t('button.signOut')}
+          </div>
+        </div>
+      )}
+
+      <DialogSelectLanguage
+        isOpen={isOpenLangage}
+        onClose={() => {
+          setIsOpenLangage(false);
+        }}
+      />
+      <DialogConfirmClearConversations
+        isOpen={isOpenClearConversation}
+        onClose={() => {
+          setIsOpenClearConversation(false);
+        }}
+        onDelete={clearConversations}
+      />
+    </>
   );
 };
 
-export default AuthAmplify;
+export default Menu;
