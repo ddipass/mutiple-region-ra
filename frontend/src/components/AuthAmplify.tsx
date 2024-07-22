@@ -1,4 +1,4 @@
-import React, { ReactNode, cloneElement, ReactElement } from 'react';
+import React, { ReactNode, cloneElement, ReactElement, useState } from 'react';
 import { BaseProps } from '../@types/common';
 import { useTranslation } from 'react-i18next';
 import { SocialProvider } from '../@types/auth';
@@ -63,7 +63,13 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
     },
     SignUp: {
       FormFields() {
+
         const { validationErrors } = useAuthenticator();
+        const [isChecked, setIsChecked] = useState(false);
+        const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+          setIsChecked(event.target.checked);
+        };
+
         return (
           <>
             {/* Re-use default `Authenticator.SignUp.FormFields` */}
@@ -78,6 +84,8 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
                 hasError={!!validationErrors.acknowledgement}
                 name="acknowledgement"
                 value="yes"
+                checked={isChecked}
+                onChange={handleCheckboxChange}
                 label={
                   <>
                     {t('auth.agreeTerms')} 
