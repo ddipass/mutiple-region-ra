@@ -87,6 +87,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
          order:1
        },
        phone_number: {
+         order:2,
          dialCodeList: ['+86', '+852', '+1']
        },
        password: {
