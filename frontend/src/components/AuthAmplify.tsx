@@ -17,6 +17,12 @@ const MISTRAL_ENABLED: boolean =
   import.meta.env.VITE_APP_ENABLE_MISTRAL === 'true';
 
 
+type Props = BaseProps & {
+  socialProviders: SocialProvider[];
+  children: ReactNode;
+};
+
+
 const ViewTermsButton = () => {
   const handleViewTerms = () => {
     window.open('/agreement', '_blank');
@@ -34,14 +40,9 @@ const ViewTermsButton = () => {
 };
 
 
-type Props = BaseProps & {
-  socialProviders: SocialProvider[];
-  children: ReactNode;
-};
-
-
 const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
 
+  const { t } = useTranslation();
   const { signOut } = useAuthenticator();
 
   const components = {
