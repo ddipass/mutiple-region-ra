@@ -22,8 +22,8 @@ const translation = {
         mustAgreeTerms: "You must agree to the Terms and Conditions as described in ",
         mustAgreeUsageRules: "You must agree to abide by the Usage Rules ",
       },
-      viewRules: "Usage Rules (View)",
-      viewTerms: "User Aggreement (View)",
+      viewRules: "View Usage Rules",
+      viewTerms: "View User Agreement",
     },
     common: {
       backToHome: "Back",

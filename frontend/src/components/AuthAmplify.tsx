@@ -63,6 +63,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
     },
     SignUp: {
       FormFields() {
+        const { validationErrors } = useAuthenticator();
         return (
           <>
             {/* Re-use default `Authenticator.SignUp.FormFields` */}
@@ -70,25 +71,20 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
 
             {/* Append & require Terms and Conditions field to sign in  */}
             <ViewTermsButton />
-          </>
-        );
-      },
-      Footer() {
-        const { validationErrors } = useAuthenticator();
-        return (
-          <>
-            {/* Append & require Terms and Conditions field to sign in  */}
-            <CheckboxField
-              errorMessage={validationErrors.acknowledgement as string}
-              hasError={!!validationErrors.acknowledgement}
-              name="acknowledgement"
-              value="yes"
-              label={
-                <>
-                  {t('auth.agreeTerms')} 
-                </>
-              }
-            />
+            <div>
+              {/* Append & require Terms and Conditions field to sign in  */}
+              <CheckboxField
+                errorMessage={validationErrors.acknowledgement as string}
+                hasError={!!validationErrors.acknowledgement}
+                name="acknowledgement"
+                value="yes"
+                label={
+                  <>
+                    {t('auth.agreeTerms')} 
+                  </>
+                }
+              />
+            </div>
           </>
         );
       },
