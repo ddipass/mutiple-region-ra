@@ -1,4 +1,4 @@
-import React, { ReactNode, cloneElement, ReactElement, useState } from 'react';
+import React, { ReactNode, cloneElement, ReactElement } from 'react';
 import { BaseProps } from '../@types/common';
 import { useTranslation } from 'react-i18next';
 import { SocialProvider } from '../@types/auth';
@@ -8,29 +8,38 @@ import {
   CheckboxField,
   useTheme,
   View,
-  Text
+  Text,
+  Button
 } from '@aws-amplify/ui-react';
+
 
 const MISTRAL_ENABLED: boolean =
   import.meta.env.VITE_APP_ENABLE_MISTRAL === 'true';
 
+
+const ViewTermsButton = () => {
+  const handleViewTerms = () => {
+    window.open('/agreement', '_blank');
+  };
+
+  return (
+    <Button onClick={handleViewTerms} variation="link">
+      {t('auth.viewTerms')}
+    </Button>
+  );
+};
+
+
 type Props = BaseProps & {
   socialProviders: SocialProvider[];
   children: ReactNode;
-  onSignOut?: () => void; // 添加这个属性
 };
 
-const AuthAmplify: React.FC<Props> = ({ socialProviders, children, onSignOut }) => {
+
+const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
 
   const { t } = useTranslation();
   const { signOut } = useAuthenticator();
-
-  const handleSignOut = () => {
-    signOut();
-    if (onSignOut) {
-      onSignOut();
-    }
-  };
 
   const components = {
     Header() {
@@ -53,28 +62,21 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children, onSignOut }) 
     SignUp: {
       FormFields() {
         const { validationErrors } = useAuthenticator();
-        const [isChecked, setIsChecked] = useState(false);
-
-        const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-          setIsChecked(event.target.checked);
-        };
-
         return (
           <>
+            {/* Re-use default `Authenticator.SignUp.FormFields` */}
             <Authenticator.SignUp.FormFields />
+
+            {/* Append & require Terms and Conditions field to sign in  */}
             <CheckboxField
               errorMessage={validationErrors.acknowledgement as string}
               hasError={!!validationErrors.acknowledgement}
               name="acknowledgement"
               value="yes"
-              checked={isChecked}
-              onChange={handleCheckboxChange}
               label={
                 <>
                   {t('auth.agreeTerms')} 
-                  <a href="/agreement" target="_blank">
-                    {t('auth.viewTerms')}
-                  </a>
+                  <ViewTermsButton />
                 </>
               }
             />
@@ -120,7 +122,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children, onSignOut }) 
       services={services}
       formFields={formFields} 
     >
-      <>{cloneElement(children as ReactElement, { signOut: handleSignOut })}</>
+      <>{cloneElement(children as ReactElement, { signOut })}</>
     </Authenticator>
   );
 };
