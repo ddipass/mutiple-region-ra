@@ -1,4 +1,3 @@
-import React from 'react';
 import { Auth } from 'aws-amplify';
 import { useState, useEffect } from 'react';
 
@@ -39,4 +38,5 @@ export const useUserInfo = (): { user: UserData | null; loading: boolean; error:
   return { user, loading, error };
 };
 
-export default UserInfo;
+// 如果您想要导出一个默认值，可以直接导出 useUserInfo
+export default useUserInfo;
