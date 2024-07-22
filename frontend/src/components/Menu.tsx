@@ -7,8 +7,7 @@ import { BaseProps } from '../@types/common';
 import DialogConfirmClearConversations from './DialogConfirmClearConversations';
 import useConversation from '../hooks/useConversation';
 import { useNavigate } from 'react-router-dom';
-import useSWR from 'swr';
-import fetchAuthSession from '@aws-amplify/auth';
+import { useUserInfo } from './UserInfo';
 
 type Props = BaseProps & {
   onSignOut: () => void;
@@ -60,21 +59,15 @@ const Menu: React.FC<Props> = (props) => {
     []
   );
 
-  // 第一引数は不要だが、ないとリクエストされないため 'user' 文字列を入れる
-  const { data } = useSWR('user', () => {
-    return fetchAuthSession();
-  });
-
-  const email = useMemo<string>(() => {
-    return (data?.tokens?.idToken?.payload.email ?? '') as string;
-  }, [data]); 
+  // get user information
+  const { user, loading, error } = useUserInfo();
 
   return (
     <>
 
       <div className="relative bg-aws-squid-ink">
         <a href="/" target="_blank">
-          <span>{email}</span>
+          <span>Email: {user.email}</span>
         </a>
       </div>
       <Button
