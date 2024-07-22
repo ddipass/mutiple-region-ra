@@ -6,7 +6,7 @@ import { PiList, PiPlus } from 'react-icons/pi';
 import ButtonIcon from './ButtonIcon';
 import SnackbarProvider from '../providers/SnackbarProvider';
 import { Outlet } from 'react-router-dom';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import useDrawer from '../hooks/useDrawer';
 import useConversation from '../hooks/useConversation';
 import useChat from '../hooks/useChat';
@@ -17,6 +17,10 @@ type Props = BaseProps & {
 };
 
 const AppContent: React.FC<Props> = (props) => {
+
+  const location = useLocation();
+  const isPublicRoute = ['/usage-rules', '/agreement'].includes(location.pathname);
+
   const { getPageLabel } = usePageLabel();
   const { switchOpen: switchDrawer } = useDrawer();
   const navigate = useNavigate();
@@ -32,13 +36,14 @@ const AppContent: React.FC<Props> = (props) => {
 
   return (
     <div className="relative flex h-dvh w-screen bg-aws-paper">
-      <ChatListDrawer
-        onSignOut={() => {
-          props.signOut ? props.signOut() : null;
-        }}
-      />
-
-
+      {!isPublicRoute && (      
+        <ChatListDrawer
+          onSignOut={() => {
+            props.signOut ? props.signOut() : null;
+          }}
+        />
+      )}
+      
       <main className="min-h-dvh relative flex flex-col flex-1 overflow-y-hidden transition-width">
 
         <header className="visible flex h-12 w-full items-center bg-aws-squid-ink p-3 text-lg text-aws-font-color-white lg:hidden lg:h-0">

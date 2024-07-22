@@ -1,8 +1,6 @@
 import App from './App.tsx';
 import ChatPage from './pages/ChatPage.tsx';
 import NotFound from './pages/NotFound.tsx';
-import UsageRules from './pages/UsageRules.tsx'; // 导入 UsageRules 组件
-import UsrAgreement from './pages/UsrAgreement.tsx'; // 导入 UsrAgreement 组件
 import BotExplorePage from './pages/BotExplorePage.tsx';
 import BotEditPage from './pages/BotEditPage.tsx';
 import BotApiSettingsPage from './pages/BotApiSettingsPage.tsx';
@@ -23,14 +21,14 @@ const rootChildren = [
     path: '/',
     element: <ChatPage />,
   },
-  {
-    path: '/usage-rules',
-    element: <UsageRules />,
-  },  
-  {
-    path: '/agreement',
-    element: <UsrAgreement />,
-  },  
+  // {
+  //   path: '/usage-rules',
+  //   element: <UsageRules />,
+  // },  
+  // {
+  //   path: '/agreement',
+  //   element: <UsrAgreement />,
+  // },  
   {
     path: '/bot/explore',
     element: <BotExplorePage />,
@@ -91,8 +89,8 @@ export const allPaths = getAllPaths(rootChildren);
 export const usePageLabel = () => {
   const { t } = useTranslation();
   const pageLabel: { path: (typeof allPaths)[number]; label: string }[] = [
-    { path: '/agreement', label: t('usrAgreement.pageTitle') }, // 添加 usrAgreement 的标签
-    { path: '/usage-rules', label: t('usageRules.pageTitle') }, // 添加 UsageRules 的标签
+    // { path: '/agreement', label: t('usrAgreement.pageTitle') }, // 添加 usrAgreement 的标签
+    // { path: '/usage-rules', label: t('usageRules.pageTitle') }, // 添加 UsageRules 的标签
     { path: '/bot/explore', label: t('bot.explore.label.pageTitle') },
     {
       path: '/admin/shared-bot-analytics',

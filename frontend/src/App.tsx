@@ -11,6 +11,10 @@ import { validateSocialProvider } from './utils/SocialProviderUtils';
 import AppContent from './components/AppContent';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './pages/ErrorFallback';
+import UsageRules from './pages/UsageRules.tsx'; // 导入 UsageRules 组件
+import UsrAgreement from './pages/UsrAgreement.tsx'; // 导入 UsrAgreement 组件
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 
 const customProviderEnabled =
   import.meta.env.VITE_APP_CUSTOM_PROVIDER_ENABLED === 'true';
@@ -52,17 +56,28 @@ const App: React.FC = () => {
 
   return (
     <ErrorBoundary fallback={<ErrorFallback />}>
-      {customProviderEnabled ? (
-        <AuthCustom>
-          <AppContent />
-        </AuthCustom>
-      ) : (
-        <Authenticator.Provider>
-          <AuthAmplify socialProviders={socialProviderFromEnv}>
-            <AppContent />
-          </AuthAmplify>
-        </Authenticator.Provider>
-      )}
+      <Router>
+        <Routes>
+          <Route path="/usage-rules" element={<UsageRules />} />
+          <Route path="/agreement" element={<UsrAgreement />} />
+          <Route
+            path="*"
+            element={
+              customProviderEnabled ? (
+                <AuthCustom>
+                  <AppContent />
+                </AuthCustom>
+              ) : (
+                <Authenticator.Provider>
+                  <AuthAmplify socialProviders={socialProviderFromEnv}>
+                    <AppContent />
+                  </AuthAmplify>
+                </Authenticator.Provider>
+              )
+            }
+          />
+        </Routes>
+      </Router>
     </ErrorBoundary>
   );
 };

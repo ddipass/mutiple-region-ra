@@ -10,7 +10,6 @@ import {
   View,
   Text
 } from '@aws-amplify/ui-react';
-import { useLocation } from 'react-router-dom';
 
 const MISTRAL_ENABLED: boolean =
   import.meta.env.VITE_APP_ENABLE_MISTRAL === 'true';
@@ -21,13 +20,6 @@ type Props = BaseProps & {
 };
 
 const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
-
-  const location = useLocation();
-
-  // 检查当前路径是否是 /usage-rules /agreement
-  if (location.pathname === '/usage-rules' || location.pathname === '/agreement') {
-    return <>{children}</>;
-  }
 
   const { t } = useTranslation();
   const { signOut } = useAuthenticator();
