@@ -12,6 +12,10 @@ import AppContent from './components/AppContent';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './pages/ErrorFallback';
 
+import UsageRules from './pages/UsageRules';
+import UsrAgreement from './pages/UsrAgreement';
+import { useLocation, Route, Routes } from 'react-router-dom';
+
 
 const customProviderEnabled =
   import.meta.env.VITE_APP_CUSTOM_PROVIDER_ENABLED === 'true';
@@ -51,6 +55,19 @@ const App: React.FC = () => {
   I18n.setLanguage(i18n.language);
   //I18n.setLanguage('en');
 
+  const location = useLocation();
+  const isPublicRoute = ['/usage-rules', '/agreement'].includes(location.pathname);
+
+  if (isPublicRoute) {
+    return (
+      <ErrorBoundary fallback={<ErrorFallback />}>
+        <Routes>
+          <Route path="/usage-rules" element={<UsageRules />} />
+          <Route path="/agreement" element={<UsrAgreement />} />
+        </Routes>
+      </ErrorBoundary>
+    );
+  }
 
   return (
     <ErrorBoundary fallback={<ErrorFallback />}>

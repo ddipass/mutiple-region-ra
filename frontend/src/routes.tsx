@@ -107,7 +107,8 @@ export const usePageLabel = () => {
   return { pageLabel, getPageLabel };
 };
 
-export const router = createBrowserRouter(routes as unknown as RouteObject[]);
+// export const router = createBrowserRouter(routes as unknown as RouteObject[]);
+export const router = createBrowserRouter(routes as RouteObject[]);
 
 type ConversationRoutes = { path: (typeof allPaths)[number] }[];
 
