@@ -29,7 +29,7 @@ const ViewTermsButton = () => {
   };
 
   const { t } = useTranslation();
-  
+
   return (
     <Button onClick={handleViewTerms} variation="link">
       {t('auth.viewTerms')}
@@ -63,12 +63,20 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
     },
     SignUp: {
       FormFields() {
-        const { validationErrors } = useAuthenticator();
         return (
           <>
             {/* Re-use default `Authenticator.SignUp.FormFields` */}
             <Authenticator.SignUp.FormFields />
 
+            {/* Append & require Terms and Conditions field to sign in  */}
+            <ViewTermsButton />
+          </>
+        );
+      },
+      Footer() {
+        const { validationErrors } = useAuthenticator();
+        return (
+          <>
             {/* Append & require Terms and Conditions field to sign in  */}
             <CheckboxField
               errorMessage={validationErrors.acknowledgement as string}
@@ -78,7 +86,6 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
               label={
                 <>
                   {t('auth.agreeTerms')} 
-                  <ViewTermsButton />
                 </>
               }
             />
