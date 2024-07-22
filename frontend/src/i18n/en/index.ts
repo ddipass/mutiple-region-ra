@@ -26,15 +26,15 @@ const translation = {
       viewTerms: "User Aggreement (View)",
     },
     common: {
-      backToHome: "Back to Login & Signup",
+      backToHome: "Back",
     },
     usrAgreement: {
       pageTitle: "Master Agreement for this Research Platform",
-      agreeButton: "I Agree",
+      agreeButton: "I Agree to this user Master Agreement",
       agreedMessage: "You have agreed to the user agreement",
     },
     usageRules: {
-      pageTitle: "Usage Rules",
+      pageTitle: "Your Usage Rules",
       agreeButton: "I Agree to the Usage Rules",
       agreedMessage: "You have agreed to the usage rules. Redirecting to the main page...",
     },

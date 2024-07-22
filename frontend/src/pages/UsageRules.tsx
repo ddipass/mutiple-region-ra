@@ -40,6 +40,7 @@ const UsageRules: React.FC = () => {
           <PiArrowLeft className="mr-2" />
           {t('common.backToHome')}
         </Link>
+        <h1 className="text-xl font-bold text-aws-font-color">{t('usageRules.pageTitle')}</h1>
       </div>
 
       {/* 2. 内容区域 */}

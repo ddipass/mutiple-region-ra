@@ -67,7 +67,7 @@ const Menu: React.FC<Props> = (props) => {
 
       <div className="relative bg-aws-squid-ink">
         <a href="/" target="_blank">
-          <span>Email: {user?.email}!</span>
+          <span>Email: {user?.email}</span>
         </a>
       </div>
       <Button
