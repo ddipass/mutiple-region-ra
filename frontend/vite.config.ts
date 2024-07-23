@@ -14,8 +14,8 @@ export default defineConfig({
       },
       injectRegister: 'auto',
       manifest: {
-        name: 'Bedrock Claude Chat',
-        short_name: 'Bedrock Chat',
+        name: '国家集成电路设计自动化技术创新中心',
+        short_name: '国家集成电路设计自动化技术创新中心',
         description: 'AWS-native chatbot using Bedrock + Claude',
         start_url: '/index.html',
         display: 'standalone',

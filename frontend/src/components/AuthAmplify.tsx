@@ -1,4 +1,4 @@
-import React, { ReactNode, cloneElement, ReactElement, useState } from 'react';
+import React, { ReactNode, cloneElement, ReactElement } from 'react';
 import { BaseProps } from '../@types/common';
 import { useTranslation } from 'react-i18next';
 import { SocialProvider } from '../@types/auth';
@@ -27,13 +27,20 @@ const ViewTermsButton = () => {
   const handleViewTerms = () => {
     window.open('/agreement', '_blank');
   };
-
+  const handleUsageRules = () => {
+    window.open('/usage-rules', '_blank');
+  };
   const { t } = useTranslation();
 
   return (
-    <Button onClick={handleViewTerms} variation="link">
-      {t('auth.viewTerms')}
-    </Button>
+    <div className="flex flex-row justify-center space-x-4">
+      <Button onClick={handleViewTerms} variation="link">
+        {t('auth.viewTerms')}
+      </Button>
+      <Button onClick={handleUsageRules} variation="link">
+        {t('auth.viewRules')}
+      </Button>
+    </div>
   );
 };
 
@@ -46,7 +53,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
   const components = {
     Header() {
       return (
-        <div className="mb-5 mt-10 flex justify-center text-3xl text-aws-font-color">
+        <div className="mb-5 mt-10 flex justify-center text-2xl text-aws-font-color">
           {!MISTRAL_ENABLED ? t('app.name') : t('app.nameWithoutClaude')}
         </div>
       );
@@ -63,13 +70,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
     },
     SignUp: {
       FormFields() {
-
-        const { validationErrors } = useAuthenticator();
-        const [isChecked, setIsChecked] = useState(false);
-        const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-          setIsChecked(event.target.checked);
-        };
-
+        const { tokens } = useTheme();
         return (
           <>
             {/* Re-use default `Authenticator.SignUp.FormFields` */}
@@ -77,35 +78,12 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
 
             {/* Append & require Terms and Conditions field to sign in  */}
             <ViewTermsButton />
-            <div>
-              {/* Append & require Terms and Conditions field to sign in  */}
-              <CheckboxField
-                errorMessage={validationErrors.acknowledgement as string}
-                hasError={!!validationErrors.acknowledgement}
-                name="acknowledgement"
-                value="yes"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-                label={
-                  <>
-                    {t('auth.agreeTerms')} 
-                  </>
-                }
-              />
-            </div>
+            <Text color={tokens.colors.neutral[80]}>
+              By create account of this research platform you must agree & follow "user agreement" & "usage rules". 
+            </Text>
           </>
         );
       },
-    },
-  };
-
-  const services = {
-    async validateCustomSignUp(formData: Record<string, any>) {
-      if (!formData.acknowledgement) {
-        return {
-          acknowledgement: t('auth.errors.mustAgreeTerms'),
-        };
-      }
     },
   };
 
@@ -116,7 +94,7 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
   //      },
   //      phone_number: {
   //        order:2,
-  //        dialCodeList: ['+86', '+852', '+1']
+  //        dialCode: ['+86']
   //      },
   //      password: {
   //        order: 3
@@ -132,7 +110,6 @@ const AuthAmplify: React.FC<Props> = ({ socialProviders, children }) => {
       socialProviders={socialProviders}
       initialState="signIn"
       components={components}
-      services={services}
       // formFields={formFields} 
     >
       <>{cloneElement(children as ReactElement, { signOut })}</>

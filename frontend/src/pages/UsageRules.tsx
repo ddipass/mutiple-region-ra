@@ -35,8 +35,8 @@ const UsageRules: React.FC = () => {
   return (
     <div className="relative flex h-full flex-1 flex-col">
       {/* 1. 顶部区域 */}
-      <div className="sticky top-0 z-10 mb-1.5 flex h-14 w-full items-center border-b border-gray bg-aws-paper p-2">
-        <Link to="/login" className="flex items-center text-aws-sea-blue hover:underline">
+      <div className="sticky top-0 z-10 mb-1.5 flex h-14 w-full items-center justify-between border-b border-gray bg-aws-paper p-2">
+        <Link to="/" className="flex items-center text-aws-sea-blue hover:underline">
           <PiArrowLeft className="mr-2" />
           {t('common.backToHome')}
         </Link>

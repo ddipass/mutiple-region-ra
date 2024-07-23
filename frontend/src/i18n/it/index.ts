@@ -6,7 +6,7 @@ const translation = {
       },
     },
     app: {
-      name: 'Bedrock Claude Chat',
+      name: '国家集成电路设计自动化技术创新中心',
       inputMessage: 'Inviare un messaggio',
       starredBots: 'Bot preferiti',
       recentlyUsedBots: 'Bot utilizzati di recente',
