@@ -32,6 +32,7 @@ DEFAULT_GENERATION_CONFIG = (
     else DEFAULT_CLAUDE_GENERATION_CONFIG
 )
 
+# 这个Client是负责连接Cohere等Embeding模型的
 client = get_bedrock_client()
 
 class ConverseApiRequest(TypedDict):

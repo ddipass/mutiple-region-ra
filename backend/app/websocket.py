@@ -276,6 +276,7 @@ def process_chat_input(
             ...
     except Exception as e:
         logger.error(f"Failed to run stream handler: {e}")
+        logger.error(f"Dongping: {args}")
         return {
             "statusCode": 500,
             "body": "Failed to run stream handler.",

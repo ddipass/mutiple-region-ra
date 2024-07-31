@@ -50,6 +50,7 @@ def is_running_on_lambda():
 
 
 def get_bedrock_client(region=BEDROCK_REGION_JSON["default"]):
+    logger.info(f"Dongping: Model Region @ {region}")
     client = boto3.client("bedrock-runtime", region)
     return client
 

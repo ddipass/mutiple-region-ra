@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import Any, Callable
 
 from app.bedrock import ConverseApiRequest, calculate_price, get_model_id
@@ -8,6 +9,16 @@ from langchain_core.outputs import GenerationChunk
 from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
+
+# BEDROCK_REGION = os.environ.get("BEDROCK_REGION", "us-east-1")
+DEFAULT_BEDROCK_REGION = '''{
+    "claude-v3-sonnet": "us-east-2",
+    "claude-v3.5-sonnet": "us-east-1",
+    "claude-v3-opus": "us-west-2",
+    "default": "us-west-2"
+}'''
+BEDROCK_REGION = os.environ.get("BEDROCK_REGION", DEFAULT_BEDROCK_REGION)
+BEDROCK_REGION_JSON = json.loads(BEDROCK_REGION)
 
 
 class OnStopInput(BaseModel):
@@ -52,7 +63,9 @@ class ConverseApiStreamHandler:
         return self
 
     def run(self, args: ConverseApiRequest):
-        client = get_bedrock_client()
+        BEDROCK_REGION_JSON = json.loads(BEDROCK_REGION)
+        client = get_bedrock_client(BEDROCK_REGION_JSON[model_name])        
+        # client = get_bedrock_client()
         response = client.converse_stream(
             modelId=args["model_id"],
             messages=args["messages"],
