@@ -21,6 +21,7 @@ import {
   PiShareNetwork,
   PiTrash,
   PiX,
+  PiUsersThree,
 } from 'react-icons/pi';
 import { PiCircleNotch } from 'react-icons/pi';
 import useConversation from '../hooks/useConversation';
@@ -331,6 +332,13 @@ const ChatListDrawer: React.FC<Props> = (props) => {
                   icon={<PiGlobe />}
                   to="admin/api-management"
                   labelComponent={getPageLabel('/admin/api-management')}
+                  onClick={closeSamllDrawer}
+                />
+                <DrawerItem
+                  isActive={false}
+                  icon={<PiUsersThree />}
+                  to="admin/users"
+                  labelComponent={t('button.userUsages')}
                   onClick={closeSamllDrawer}
                 />
               </ExpandableDrawerGroup>

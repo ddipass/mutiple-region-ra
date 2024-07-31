@@ -318,6 +318,12 @@ How would you categorize this email?`,
         failDeleteApi: 'Failed to delete the API.',
       },
     },
+
+
+#     admin: {
+
+#     }
+
     admin: {
       sharedBotAnalytics: {
         label: {
@@ -344,6 +350,27 @@ How would you categorize this email?`,
           pageTitle: 'API Management',
           publishedDate: 'Published Date',
           noApi: 'No APIs.',
+        },
+      },
+      usersManagement: {
+        label: {
+          pageTitle: 'User List',
+          emailAddr: 'Email Address',
+          noUser: 'No Users.',
+          SearchCondition: {
+            title: 'Calculation Period',
+            from: 'From',
+            to: 'To',
+          },
+          sortByCost: 'Sort by Cost',
+        },
+        help: {
+          overview:
+            'Monitor the usage status of each users.',
+          calculationPeriod:
+            'If the Calculation Period is not set, the cost for today will be displayed. The users list are sorted by Cost.',
+          calculationMemo:
+            'Calculation is estimated only for Claude useage.',
         },
       },
       botManagement: {

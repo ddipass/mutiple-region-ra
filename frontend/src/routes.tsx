@@ -7,6 +7,7 @@ import BotApiSettingsPage from './pages/BotApiSettingsPage.tsx';
 import AdminSharedBotAnalyticsPage from './pages/AdminSharedBotAnalyticsPage.tsx';
 import AdminApiManagementPage from './pages/AdminApiManagementPage.tsx';
 import AdminBotManagementPage from './pages/AdminBotManagementPage.tsx';
+import AdminUsersPage from './pages/AdminUsersPage.tsx';
 import { useTranslation } from 'react-i18next';
 import {
   createBrowserRouter,
@@ -54,6 +55,10 @@ const rootChildren = [
   {
     path: '/admin/bot/:botId',
     element: <AdminBotManagementPage />,
+  },
+  {
+    path: '/admin/users',
+    element: <AdminUsersPage />,
   },
   {
     path: '/:conversationId',

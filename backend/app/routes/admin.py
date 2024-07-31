@@ -97,6 +97,7 @@ async def get_users(
             id=user.id,
             email=user.email,
             total_price=user.total_price,
+            description='ID: ' + user.id,
         )
         for user in users
     ]
