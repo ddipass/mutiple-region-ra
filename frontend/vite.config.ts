@@ -14,8 +14,8 @@ export default defineConfig({
       },
       injectRegister: 'auto',
       manifest: {
-        name: 'Bedrock Claude Chat',
-        short_name: 'Bedrock Chat',
+        name: 'Research Assistant',
+        short_name: 'Research Assistant',
         description: 'AWS-native chatbot using Bedrock + Claude',
         start_url: '/index.html',
         display: 'standalone',
