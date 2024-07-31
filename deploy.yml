@@ -1,0 +1,162 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: A template to deploy the research-assistant application with customizable parameters.
+
+Parameters:
+  AllowSelfRegister:
+    Type: String
+    Default: 'true'
+    Description: Allow users to self-register (true/false)
+
+  Ipv4Ranges:
+    Type: String
+    Default: '["0.0.0.0/1","128.0.0.0/1"]'
+    Description: Allowed IPv4 ranges in JSON array format
+
+  Ipv6Ranges:
+    Type: String
+    Default: '["0000:0000:0000:0000:0000:0000:0000:0000/1","8000:0000:0000:0000:0000:0000:0000:0000/1"]'
+    Description: Allowed IPv6 ranges in JSON array format
+
+  AllowedSignUpEmailDomains:
+    Type: String
+    Default: '[]'
+    Description: Allowed sign-up email domains in JSON array format
+
+  Region:
+    Type: String
+    Default: 'us-east-1'
+    Description: AWS region for deployment
+
+  BedrockRegion:
+    Type: String
+    Default: '{"claude-v3-sonnet":"us-east-1","claude-v3.5-sonnet":"us-east-1","claude-v3-opus":"us-west-2","default":"us-west-2"}'
+    Description: JSON string for Bedrock region configuration
+
+  GitBranch:
+    Type: String
+    Default: "main"
+    Description: "Git branch to clone"
+
+  GitRepo:
+    Type: String
+    Default: "https://github.com/ddipass/mutiple-region-ra.git"
+    Description: "Git repository URL"
+
+  RepoDir:
+    Type: String
+    Default: "mutiple-region-ra"
+    Description: "Directory name of the cloned repository"
+
+Resources:
+  ProjectRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AdministratorAccess'
+
+  ProjectRoleDefaultPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ProjectRoleDefaultPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource:
+              - !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${Project}:*'
+              - !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/${Project}'
+          - Effect: Allow
+            Action:
+              - codebuild:BatchPutCodeCoverages
+              - codebuild:BatchPutTestCases
+              - codebuild:CreateReport
+              - codebuild:CreateReportGroup
+              - codebuild:UpdateReport
+            Resource: !Sub 'arn:${AWS::Partition}:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/${Project}-*'
+      Roles:
+        - !Ref ProjectRole
+
+  Project:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: NO_ARTIFACTS
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:7.0
+        Type: LINUX_CONTAINER
+        EnvironmentVariables:
+          - Name: ALLOW_SELF_REGISTER
+            Value: !Ref AllowSelfRegister
+          - Name: IPV4_RANGES
+            Value: !Ref Ipv4Ranges
+          - Name: IPV6_RANGES
+            Value: !Ref Ipv6Ranges
+          - Name: ALLOWED_SIGN_UP_EMAIL_DOMAINS
+            Value: !Ref AllowedSignUpEmailDomains
+          - Name: REGION
+            Value: !Ref Region
+          - Name: BEDROCK_REGION
+            Value: !Ref BedrockRegion
+          - Name: GIT_BRANCH
+            Value: !Ref GitBranch
+          - Name: GIT_REPO
+            Value: !Ref GitRepo
+          - Name: REPO_DIR
+            Value: !Ref RepoDir
+      ServiceRole: !GetAtt ProjectRole.Arn
+      Source:
+        BuildSpec: |
+          version: 0.2
+          phases:
+            install:
+              runtime-versions:
+                nodejs: 18
+              commands:
+                - npm i -g aws-cdk
+            build:
+              commands:
+                - echo 'Build phase...'
+                - git clone --branch $GIT_BRANCH $GIT_REPO $REPO_DIR
+                - cd $REPO_DIR
+                - |
+                  if [ "$ALLOW_SELF_REGISTER" = "false" ]; then
+                    sed -i 's/"selfSignUpEnabled": true,/"selfSignUpEnabled": false,/' cdk/cdk.json
+                  fi
+                - |
+                  if [ ! -z "$IPV4_RANGES" ]; then
+                    jq --argjson ipv4 "$IPV4_RANGES" '.context.allowedIpV4AddressRanges = $ipv4' cdk/cdk.json > temp.json && mv temp.json cdk/cdk.json
+                  fi
+                - |
+                  if [ ! -z "$IPV6_RANGES" ]; then
+                    jq --argjson ipv6 "$IPV6_RANGES" '.context.allowedIpV6AddressRanges = $ipv6' cdk/cdk.json > temp.json && mv temp.json cdk/cdk.json
+                  fi
+                - |
+                  if [ ! -z "$ALLOWED_SIGN_UP_EMAIL_DOMAINS" ]; then
+                    jq --argjson domains "$ALLOWED_SIGN_UP_EMAIL_DOMAINS" '.context.allowedSignUpEmailDomains = $domains' cdk/cdk.json > temp.json && mv temp.json cdk/cdk.json
+                  fi
+                - |
+                  if [ ! -z "$BEDROCK_REGION" ]; then
+                    jq --argjson br "$BEDROCK_REGION" '.context.bedrockRegion = $br' cdk/cdk.json > temp.json && mv temp.json cdk/cdk.json
+                  fi
+                - cd cdk
+                - npm ci
+                - cdk bootstrap
+                - cdk deploy --require-approval never --all
+        Type: NO_SOURCE
+
+Outputs:
+  ProjectName:
+    Description: Name of the CodeBuild project
+    Value: !Ref Project
