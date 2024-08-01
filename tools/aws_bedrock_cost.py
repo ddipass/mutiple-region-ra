@@ -1,6 +1,6 @@
 import subprocess
 import json
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 import sys
 from collections import defaultdict
@@ -22,13 +22,13 @@ def get_date_range(period):
     if period == "":
         # 当前月
         start_date = date(today.year, today.month, 1)
-        end_date = today
+        end_date = today + timedelta(days=1)  # 使用下一天作为结束日期
     elif period.startswith("P"):
         try:
             months_back = int(period[1:])
             target_month = today - relativedelta(months=months_back)
             start_date = date(target_month.year, target_month.month, 1)
-            end_date = start_date + relativedelta(months=1) - relativedelta(days=1)
+            end_date = start_date + relativedelta(months=1)
         except ValueError:
             print("Invalid period format. Use 'P1' for last month, 'P2' for two months ago, etc.")
             sys.exit(1)
@@ -145,5 +145,4 @@ if data:
     except KeyError as e:
         print(f"Error accessing data: {e}")
         print("The structure of the returned data may be different than expected.")
-else:
-    print("Failed to retrieve cost data.")
+else:print("Failed to retrieve cost data.")
