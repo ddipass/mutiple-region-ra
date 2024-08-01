@@ -11,7 +11,7 @@ from app.config import DEFAULT_MISTRAL_GENERATION_CONFIG
 from app.repositories.models.conversation import MessageModel
 from app.repositories.models.custom_bot import GenerationParamsModel
 from app.routes.schemas.conversation import type_model_name, real_model_name
-from app.utils import convert_dict_keys_to_camel_case, get_bedrock_client
+from app.utils import convert_dict_keys_to_camel_case, get_bedrock_client, rename_model_id, get_model_id
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +32,7 @@ DEFAULT_GENERATION_CONFIG = (
     else DEFAULT_CLAUDE_GENERATION_CONFIG
 )
 
+# 这个Client是负责连接Cohere等Embeding模型的
 client = get_bedrock_client()
 
 class ConverseApiRequest(TypedDict):
@@ -230,41 +231,6 @@ def calculate_price(
     )
 
     return input_price * input_tokens / 1000.0 + output_price * output_tokens / 1000.0
-
-
-def get_model_id(model: type_model_name) -> str:
-    # Ref: https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids-arns.html
-    if model == "claude-v2":
-        return "anthropic.claude-v2:1"
-    elif model == "claude-instant-v1":
-        return "anthropic.claude-instant-v1"
-    elif model == "claude-v3-sonnet":
-        return "anthropic.claude-3-sonnet-20240229-v1:0"
-    elif model == "claude-v3-haiku":
-        return "anthropic.claude-3-haiku-20240307-v1:0"
-    elif model == "claude-v3-opus":
-        return "anthropic.claude-3-opus-20240229-v1:0"
-    elif model == "claude-v3.5-sonnet":
-        return "anthropic.claude-3-5-sonnet-20240620-v1:0"
-    elif model == "mistral-7b-instruct":
-        return "mistral.mistral-7b-instruct-v0:2"
-    elif model == "mixtral-8x7b-instruct":
-        return "mistral.mixtral-8x7b-instruct-v0:1"
-    elif model == "mistral-large":
-        return "mistral.mistral-large-2402-v1:0"
-
-def rename_model_id(model: real_model_name) -> str:
-    # Ref: https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids-arns.html
-    if model == "anthropic.claude-3-haiku-20240307-v1:0":
-        return "claude-v3-haiku"
-    elif model == "anthropic.claude-3-sonnet-20240229-v1:0":
-        return "claude-v3-sonnet"
-    elif model == "anthropic.claude-3-opus-20240229-v1:0":
-        return "claude-v3-opus"
-    elif model == "anthropic.claude-3-5-sonnet-20240620-v1:0":
-        return "claude-v3.5-sonnet"
-    else:
-        return "default"
 
 def calculate_query_embedding(question: str) -> list[float]:
     model_id = DEFAULT_EMBEDDING_CONFIG["model_id"]
