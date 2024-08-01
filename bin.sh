@@ -51,14 +51,14 @@ REGION="us-east-1"
 ALLOW_SELF_REGISTER="true"
 IPV4_RANGES=""
 IPV6_RANGES=""
-ALLOWED_SIGN_UP_EMAIL_DOMAINS='["gmail.com","amazon.com"]'
+ALLOWED_SIGN_UP_EMAIL_DOMAINS='["gmail.com","seu.edu.cn","nctieda.com","nctieda.com.cn"]'
 BEDROCK_REGION='{
   "claude-v3-sonnet": "us-east-1",
   "claude-v3.5-sonnet": "us-east-1",
   "claude-v3-opus": "us-west-2",
   "default": "us-west-2"
 }'
-GIT_BRANCH="main"
+GIT_BRANCH="nctieda"
 GIT_REPO="https://github.com/ddipass/mutiple-region-ra.git"
 REPO_DIR="mutiple-region-ra"  
 
