@@ -1,6 +1,7 @@
 import sys
 import subprocess
 import importlib
+import os
 
 def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
@@ -33,8 +34,19 @@ class Colors:
 def color_print(text, color):
     print(f"{color}{text}{Colors.ENDC}")
 
+def get_default_region():
+    """获取默认 AWS 区域"""
+    region = os.environ.get('AWS_DEFAULT_REGION')
+    if not region:
+        session = boto3.Session()
+        region = session.region_name
+    if not region:
+        region = 'us-west-2'  # 设置一个默认区域
+    return region
+
 def get_all_regions():
-    ec2_client = boto3.client('ec2')
+    default_region = get_default_region()
+    ec2_client = boto3.client('ec2', region_name=default_region)
     try:
         response = ec2_client.describe_regions()
         return [region['RegionName'] for region in response['Regions']]
