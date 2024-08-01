@@ -10,12 +10,12 @@ logger = logging.getLogger(__name__)
 
 # AWS 配置
 AWS_REGION = "us-west-2"
-TABLE_NAME = "BedrockChatStack-DatabaseConversationTable03F3FD7A-18GPWK0VCGD8U"
-CLUSTER_NAME = "BedrockChatStack-EmbeddingCluster52B0C71F-Zq3iBds6OaI1"
-TASK_DEFINITION_NAME = "arn:aws:ecs:us-west-2:058264334768:task-definition/BedrockChatStackEmbeddingTaskDefinition2728CD81:4"
+TABLE_NAME = "BedrockChatStack-DatabaseConversationTable -------------- "
+CLUSTER_NAME = "BedrockChatStack-EmbeddingCluster -------------- "
+TASK_DEFINITION_NAME = "arn:aws:ecs:us-west-2:----------:task-definition/BedrockChatStackEmbeddingTaskDefinition----------:4"
 CONTAINER_NAME = "Container"
-SUBNET_ID = "subnet-06ea1240bd9cb75b7"
-SECURITY_GROUP_ID = "sg-00381f11ec71ad354"
+SUBNET_ID = "subnet-****************"
+SECURITY_GROUP_ID = "sg-*****************"
 
 # 初始化 AWS 客户端
 dynamodb = boto3.resource("dynamodb", region_name=AWS_REGION)
