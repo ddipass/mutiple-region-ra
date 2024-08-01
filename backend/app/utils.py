@@ -11,6 +11,9 @@ from aws_lambda_powertools.utilities import parameters
 from botocore.client import Config
 from botocore.exceptions import ClientError
 
+from app.routes.schemas.conversation import type_model_name, real_model_name
+
+
 logger = logging.getLogger(__name__)
 
 REGION = os.environ.get("REGION", "us-east-1")
@@ -28,6 +31,41 @@ PUBLISH_API_CODEBUILD_PROJECT_NAME = os.environ.get(
     "PUBLISH_API_CODEBUILD_PROJECT_NAME", ""
 )
 DB_SECRETS_ARN = os.environ.get("DB_SECRETS_ARN", "")
+
+
+def get_model_id(model: type_model_name) -> str:
+    # Ref: https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids-arns.html
+    if model == "claude-v2":
+        return "anthropic.claude-v2:1"
+    elif model == "claude-instant-v1":
+        return "anthropic.claude-instant-v1"
+    elif model == "claude-v3-sonnet":
+        return "anthropic.claude-3-sonnet-20240229-v1:0"
+    elif model == "claude-v3-haiku":
+        return "anthropic.claude-3-haiku-20240307-v1:0"
+    elif model == "claude-v3-opus":
+        return "anthropic.claude-3-opus-20240229-v1:0"
+    elif model == "claude-v3.5-sonnet":
+        return "anthropic.claude-3-5-sonnet-20240620-v1:0"
+    elif model == "mistral-7b-instruct":
+        return "mistral.mistral-7b-instruct-v0:2"
+    elif model == "mixtral-8x7b-instruct":
+        return "mistral.mixtral-8x7b-instruct-v0:1"
+    elif model == "mistral-large":
+        return "mistral.mistral-large-2402-v1:0"
+
+def rename_model_id(model: real_model_name) -> str:
+    # Ref: https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids-arns.html
+    if model == "anthropic.claude-3-haiku-20240307-v1:0":
+        return "claude-v3-haiku"
+    elif model == "anthropic.claude-3-sonnet-20240229-v1:0":
+        return "claude-v3-sonnet"
+    elif model == "anthropic.claude-3-opus-20240229-v1:0":
+        return "claude-v3-opus"
+    elif model == "anthropic.claude-3-5-sonnet-20240620-v1:0":
+        return "claude-v3.5-sonnet"
+    else:
+        return "default"
 
 
 def snake_to_camel(snake_str):

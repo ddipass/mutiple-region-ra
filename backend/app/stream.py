@@ -5,7 +5,7 @@ from typing import Any, Callable
 
 from app.bedrock import ConverseApiRequest, calculate_price, get_model_id
 from app.routes.schemas.conversation import type_model_name
-from app.utils import get_bedrock_client
+from app.utils import get_bedrock_client, rename_model_id
 from langchain_core.outputs import GenerationChunk
 from pydantic import BaseModel
 
@@ -64,6 +64,8 @@ class ConverseApiStreamHandler:
         return self
 
     def run(self, args: ConverseApiRequest):
+        model_id = args["model_id"]
+        model_name = rename_model_id(model_id)
         BEDROCK_REGION_JSON = json.loads(BEDROCK_REGION)
         client = get_bedrock_client(BEDROCK_REGION_JSON[model_name])        
         # client = get_bedrock_client()
