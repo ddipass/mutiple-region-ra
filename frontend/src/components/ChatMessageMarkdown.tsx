@@ -147,28 +147,6 @@ const ChatMessageMarkdown: React.FC<Props> = ({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        // code({ node, inline, className, children, ...props }) {
-        //   const match = /language-(\w+)/.exec(className || '');
-        //   const codeText = onlyText(children).replace(/\n$/, '');
-
-        //   return !inline && match ? (
-        //     <CopyToClipboard codeText={codeText}>
-        //       <SyntaxHighlighter
-        //         {...props}
-        //         children={codeText}
-        //         style={vscDarkPlus}
-        //         language={match[1]}
-        //         x
-        //         PreTag="div"
-        //         wrapLongLines={true}
-        //       />
-        //     </CopyToClipboard>
-        //   ) : (
-        //     <code {...props} className={className}>
-        //       {children}
-        //     </code>
-        //   );
-        // },
         code: ({node, inline, className, children, ...props}) => {
           const match = /language-(\w+)/.exec(className || '')
           const codeText = onlyText(children).replace(/\n$/, '');
@@ -176,21 +154,20 @@ const ChatMessageMarkdown: React.FC<Props> = ({
             <div className="overflow-hidden">
               <CopyToClipboard codeText={codeText}>
                 <SyntaxHighlighter
-                  children={String(children).replace(/\n$/, '')}
+                  {...props}
                   style={vscDarkPlus}
                   language={match[1]}
                   PreTag="div"
-                  {...props}
-                  customStyle={{
-                    'code[class*="language-"]': {
-                      wordBreak: 'break-all',
-                      whiteSpace: 'pre-wrap',
-                      overflowWrap: 'anywhere',
-                    },
-                  }}
                   wrapLines={true}
                   wrapLongLines={true}
-                />
+                  customStyle={{
+                    wordBreak: 'break-all',
+                    whiteSpace: 'pre-wrap',
+                    overflowWrap: 'anywhere',
+                  }}
+                >
+                  {String(children).replace(/\n$/, '')}
+                </SyntaxHighlighter>
               </CopyToClipboard>
             </div>
           ) : (
