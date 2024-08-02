@@ -171,22 +171,25 @@ const ChatMessageMarkdown: React.FC<Props> = ({
         // },
         code: ({node, inline, className, children, ...props}) => {
           const match = /language-(\w+)/.exec(className || '')
+          const codeText = onlyText(children).replace(/\n$/, '');
           return !inline && match ? (
             <div className="overflow-hidden">
-              <SyntaxHighlighter
-                children={String(children).replace(/\n$/, '')}
-                style={vscDarkPlus}
-                language={match[1]}
-                PreTag="div"
-                {...props}
-                customStyle={{
-                  wordBreak: 'break-all',
-                  whiteSpace: 'pre-wrap',
-                  overflowWrap: 'anywhere',
-                }}
-                wrapLines={true}
-                wrapLongLines={true}
-              />
+              <CopyToClipboard codeText={codeText}>
+                <SyntaxHighlighter
+                  children={String(children).replace(/\n$/, '')}
+                  style={vscDarkPlus}
+                  language={match[1]}
+                  PreTag="div"
+                  {...props}
+                  customStyle={{
+                    wordBreak: 'break-all',
+                    whiteSpace: 'pre-wrap',
+                    overflowWrap: 'anywhere',
+                  } as React.CSSProperties}
+                  wrapLines={true}
+                  wrapLongLines={true}
+                />
+              </CopyToClipboard>
             </div>
           ) : (
             <code className={`${className} break-all whitespace-pre-wrap`} {...props}>
