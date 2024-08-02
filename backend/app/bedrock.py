@@ -2,6 +2,7 @@ import base64
 import json
 import logging
 import os
+import re
 from pathlib import Path
 from typing import TypedDict, no_type_check
 
@@ -15,7 +16,6 @@ from app.utils import convert_dict_keys_to_camel_case, get_bedrock_client, renam
 
 logger = logging.getLogger(__name__)
 
-# BEDROCK_REGION = os.environ.get("BEDROCK_REGION", "us-east-1")
 DEFAULT_BEDROCK_REGION = '''{
     "claude-v3-sonnet": "us-east-2",
     "claude-v3.5-sonnet": "us-east-1",
@@ -32,7 +32,6 @@ DEFAULT_GENERATION_CONFIG = (
     else DEFAULT_CLAUDE_GENERATION_CONFIG
 )
 
-# 这个Client是负责连接Cohere等Embeding模型的
 client = get_bedrock_client()
 
 class ConverseApiRequest(TypedDict):
@@ -43,32 +42,26 @@ class ConverseApiRequest(TypedDict):
     stream: bool
     system: list[dict]
 
-
 class ConverseApiResponseMessageContent(TypedDict):
     text: str
-
 
 class ConverseApiResponseMessage(TypedDict):
     content: list[ConverseApiResponseMessageContent]
     role: str
 
-
 class ConverseApiResponseOutput(TypedDict):
     message: ConverseApiResponseMessage
-
 
 class ConverseApiResponseUsage(TypedDict):
     inputTokens: int
     outputTokens: int
     totalTokens: int
 
-
 class ConverseApiResponse(TypedDict):
     ResponseMetadata: dict
     output: ConverseApiResponseOutput
     stopReason: str
     usage: ConverseApiResponseUsage
-
 
 def compose_args(
     messages: list[MessageModel],
@@ -86,7 +79,6 @@ def compose_args(
         )
     )
 
-
 def _get_converse_supported_format(ext: str) -> str:
     supported_formats = {
         "pdf": "pdf",
@@ -99,9 +91,17 @@ def _get_converse_supported_format(ext: str) -> str:
         "txt": "txt",
         "md": "md",
     }
-    # If the extension is not supported, return "txt"
     return supported_formats.get(ext, "txt")
 
+def _convert_to_valid_file_name(file_name: str) -> str:
+    # Note: The document file name can only contain alphanumeric characters,
+    # whitespace characters, hyphens, parentheses, and square brackets.
+    # The name can't contain more than one consecutive whitespace character.
+    file_name = re.sub(r"[^a-zA-Z0-9\s\-\(\)\[\]]", "", file_name)
+    file_name = re.sub(r"\s+", " ", file_name)
+    file_name = file_name.strip()
+
+    return file_name
 
 @no_type_check
 def compose_args_for_converse_api(
@@ -133,7 +133,7 @@ def compose_args_for_converse_api(
                             }
                         }
                     )
-                elif c.content_type == "textAttachment":
+                elif c.content_type == "attachment":
                     content_blocks.append(
                         {
                             "document": {
@@ -143,10 +143,9 @@ def compose_args_for_converse_api(
                                     ],  # e.g. "document.txt" -> "txt"
                                 ),
                                 "name": Path(
-                                    c.file_name
+                                    _convert_to_valid_file_name(c.file_name)
                                 ).stem,  # e.g. "document.txt" -> "document"
-                                # encode text attachment body
-                                "source": {"bytes": c.body.encode("utf-8")},
+                                "source": {"bytes": base64.b64decode(c.body)},
                             }
                         }
                     )
@@ -184,9 +183,7 @@ def compose_args_for_converse_api(
         args["system"].append({"text": instruction})
     return args
 
-
 def call_converse_api(args: ConverseApiRequest) -> ConverseApiResponse:
-
     messages = args["messages"]
     inference_config = args["inference_config"]
     additional_model_request_fields = args["additional_model_request_fields"]
@@ -197,7 +194,7 @@ def call_converse_api(args: ConverseApiRequest) -> ConverseApiResponse:
     BEDROCK_REGION_JSON = json.loads(BEDROCK_REGION)
     client = get_bedrock_client(BEDROCK_REGION_JSON[model_name])
 
-    response = client.converse(
+    response= client.converse(
         modelId=model_id,
         messages=messages,
         inferenceConfig=inference_config,
@@ -207,14 +204,12 @@ def call_converse_api(args: ConverseApiRequest) -> ConverseApiResponse:
 
     return response
 
-
 def calculate_price(
     model: type_model_name,
     input_tokens: int,
     output_tokens: int,
     region: str = BEDROCK_REGION,
 ) -> float:
-
     model_name = rename_model_id(model)
     BEDROCK_REGION_JSON = json.loads(BEDROCK_REGION)
     region = BEDROCK_REGION_JSON[model_name]
@@ -231,7 +226,6 @@ def calculate_price(
     )
 
     return input_price * input_tokens / 1000.0 + output_price * output_tokens / 1000.0
-
 
 def calculate_query_embedding(question: str) -> list[float]:
     model_id = DEFAULT_EMBEDDING_CONFIG["model_id"]
@@ -250,7 +244,6 @@ def calculate_query_embedding(question: str) -> list[float]:
     embedding = output.get("embeddings")[0]
 
     return embedding
-
 
 def calculate_document_embeddings(documents: list[str]) -> list[list[float]]:
     def _calculate_document_embeddings(documents: list[str]) -> list[list[float]]:

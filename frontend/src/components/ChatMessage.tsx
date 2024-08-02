@@ -21,7 +21,8 @@ import ModalDialog from './ModalDialog';
 import { useTranslation } from 'react-i18next';
 import useChat from '../hooks/useChat';
 import DialogFeedback from './DialogFeedback';
-import UploadedFileText from './UploadedFileText';
+import UploadedAttachedFile from './UploadedAttachedFile';
+import { TEXT_FILE_EXTENSIONS } from '../constants/supportedAttachedFiles';
 
 type Props = BaseProps & {
   chatContent?: DisplayMessageContent;
@@ -151,7 +152,7 @@ const ChatMessage: React.FC<Props> = (props) => {
           </div>
         )}
 
-        <div className="ml-5 grow overflow-hidden"> {/* 添加 overflow-hidden */}
+        <div className="ml-5 grow overflow-hidden">
           {chatContent?.role === 'user' && !isEdit && (
             <div>
               {chatContent.content.some(
@@ -177,20 +178,33 @@ const ChatMessage: React.FC<Props> = (props) => {
                 </div>
               )}
               {chatContent.content.some(
-                (content) => content.contentType === 'textAttachment'
+                (content) => content.contentType === 'attachment'
               ) && (
                 <div key="files" className="my-2 flex">
                   {chatContent.content.map((content, idx) => {
-                    if (content.contentType === 'textAttachment') {
+                    if (content.contentType === 'attachment') {
+                      const isTextFile = TEXT_FILE_EXTENSIONS.some(
+                        (ext) => content.fileName?.toLowerCase().endsWith(ext)
+                      );
                       return (
-                        <UploadedFileText
-                          key={idx}
+                        <UploadedAttachedFile key={idx}
                           fileName={content.fileName ?? ''}
-                          onClick={() => {
-                            setDialogFileName(content.fileName ?? '');
-                            setDialogFileContent(content.body);
-                            setIsFileModalOpen(true);
-                          }}
+                          onClick={
+                            isTextFile
+                              ? () => {
+                                  const textContent = new TextDecoder(
+                                    'utf-8'
+                                  ).decode(
+                                    Uint8Array.from(atob(content.body), (c) =>
+                                      c.charCodeAt(0)
+                                    )
+                                  );
+                                  setDialogFileName(content.fileName ?? '');
+                                  setDialogFileContent(textContent);
+                                  setIsFileModalOpen(true);
+                                }
+                              : undefined
+                          }
                         />
                       );
                     }
@@ -219,7 +233,6 @@ const ChatMessage: React.FC<Props> = (props) => {
               <ModalDialog
                 isOpen={isOpenPreviewImage}
                 onClose={() => setIsOpenPreviewImage(false)}
-                // Set image null after transition end
                 widthFromContent={true}
                 onAfterLeave={() => setPreviewImageUrl(null)}>
                 {previewImageUrl && (
@@ -268,7 +281,7 @@ const ChatMessage: React.FC<Props> = (props) => {
             <ChatMessageMarkdown
               relatedDocuments={relatedDocuments}
               messageId={chatContent.id}
-              className="overflow-hidden break-words" // 添加这些类
+              className="overflow-hidden break-words"
             >
               {chatContent.content[0].body}
             </ChatMessageMarkdown>
