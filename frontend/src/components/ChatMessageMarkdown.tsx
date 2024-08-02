@@ -136,7 +136,8 @@ const ChatMessageMarkdown: React.FC<Props> = ({
 
   return (
     <ReactMarkdown
-      className={`${className ?? ''} prose max-w-full break-all`}
+      className={`${className ?? ''} prose max-w-full break-all`}    
+      // className={`${className ?? ''} prose max-w-full break-words whitespace-pre-wrap overflow-wrap-anywhere`}
       children={text}
       remarkPlugins={remarkPlugins}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -146,27 +147,52 @@ const ChatMessageMarkdown: React.FC<Props> = ({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        code({ node, inline, className, children, ...props }) {
-          const match = /language-(\w+)/.exec(className || '');
-          const codeText = onlyText(children).replace(/\n$/, '');
+        // code({ node, inline, className, children, ...props }) {
+        //   const match = /language-(\w+)/.exec(className || '');
+        //   const codeText = onlyText(children).replace(/\n$/, '');
 
+        //   return !inline && match ? (
+        //     <CopyToClipboard codeText={codeText}>
+        //       <SyntaxHighlighter
+        //         {...props}
+        //         children={codeText}
+        //         style={vscDarkPlus}
+        //         language={match[1]}
+        //         x
+        //         PreTag="div"
+        //         wrapLongLines={true}
+        //       />
+        //     </CopyToClipboard>
+        //   ) : (
+        //     <code {...props} className={className}>
+        //       {children}
+        //     </code>
+        //   );
+        // },
+        code: ({node, inline, className, children, ...props}) => {
+          const match = /language-(\w+)/.exec(className || '')
           return !inline && match ? (
-            <CopyToClipboard codeText={codeText}>
+            <div className="overflow-hidden">
               <SyntaxHighlighter
-                {...props}
-                children={codeText}
+                children={String(children).replace(/\n$/, '')}
                 style={vscDarkPlus}
                 language={match[1]}
-                x
                 PreTag="div"
+                {...props}
+                customStyle={{
+                  wordBreak: 'break-all',
+                  whiteSpace: 'pre-wrap',
+                  overflowWrap: 'anywhere',
+                }}
+                wrapLines={true}
                 wrapLongLines={true}
               />
-            </CopyToClipboard>
+            </div>
           ) : (
-            <code {...props} className={className}>
+            <code className={`${className} break-all whitespace-pre-wrap`} {...props}>
               {children}
             </code>
-          );
+          )
         },
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore

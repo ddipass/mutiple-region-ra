@@ -151,7 +151,7 @@ const ChatMessage: React.FC<Props> = (props) => {
           </div>
         )}
 
-        <div className="ml-5 grow ">
+        <div className="ml-5 grow overflow-hidden"> {/* 添加 overflow-hidden */}
           {chatContent?.role === 'user' && !isEdit && (
             <div>
               {chatContent.content.some(
@@ -267,7 +267,9 @@ const ChatMessage: React.FC<Props> = (props) => {
           {chatContent?.role === 'assistant' && (
             <ChatMessageMarkdown
               relatedDocuments={relatedDocuments}
-              messageId={chatContent.id}>
+              messageId={chatContent.id}
+              className="overflow-hidden break-words" // 添加这些类
+            >
               {chatContent.content[0].body}
             </ChatMessageMarkdown>
           )}
