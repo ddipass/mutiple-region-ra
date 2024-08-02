@@ -182,10 +182,12 @@ const ChatMessageMarkdown: React.FC<Props> = ({
                   PreTag="div"
                   {...props}
                   customStyle={{
-                    wordBreak: 'break-all',
-                    whiteSpace: 'pre-wrap',
-                    overflowWrap: 'anywhere',
-                  } as React.CSSProperties}
+                    'code[class*="language-"]': {
+                      wordBreak: 'break-all',
+                      whiteSpace: 'pre-wrap',
+                      overflowWrap: 'anywhere',
+                    },
+                  }}
                   wrapLines={true}
                   wrapLongLines={true}
                 />
