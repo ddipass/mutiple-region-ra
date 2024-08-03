@@ -8,11 +8,11 @@ const availableModels: {
   label: string;
   supportMediaType: string[];
 }[] = !MISTRAL_ENABLED ? [
-  // {
-  //   modelId: 'claude-v3-haiku',
-  //   label: 'Claude 3 (Haiku)',
-  //   supportMediaType: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-  // },
+  {
+    modelId: 'claude-v3-haiku',
+    label: 'Claude 3 (Haiku)',
+    supportMediaType: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+  },
   {
     modelId: 'claude-v3-sonnet',
     label: 'Claude 3 (Sonnet)',

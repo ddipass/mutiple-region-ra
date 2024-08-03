@@ -51,6 +51,7 @@
     "@aws-cdk/aws-autoscaling:generateLaunchTemplateInsteadOfLaunchConfig": true,
     "@aws-cdk/core:includePrefixInUniqueNameGeneration": true,
     "@aws-cdk/aws-opensearchservice:enableOpensearchMultiAzWithStandby": true,
+    "enablePricing": true,
     "enableMistral": false,
     "bedrockRegion": {
       "claude-v3-sonnet": "us-east-1",

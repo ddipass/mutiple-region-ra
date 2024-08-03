@@ -36,6 +36,7 @@ const AUTO_JOIN_USER_GROUPS: string[] =
 
 const RDS_SCHEDULES: CronScheduleProps = app.node.tryGetContext("rdbSchedules");
 const ENABLE_MISTRAL: boolean = app.node.tryGetContext("enableMistral");
+const ENABLE_PRICING: boolean = app.node.tryGetContext("enablePricing");
 const SELF_SIGN_UP_ENABLED: boolean =
   app.node.tryGetContext("selfSignUpEnabled");
 
@@ -81,6 +82,7 @@ const chat = new BedrockChatStack(app, `BedrockChatStack`, {
   autoJoinUserGroups: AUTO_JOIN_USER_GROUPS,
   rdsSchedules: RDS_SCHEDULES,
   enableMistral: ENABLE_MISTRAL,
+  enablePricing: ENABLE_PRICING,
   embeddingContainerVcpu: EMBEDDING_CONTAINER_VCPU,
   embeddingContainerMemory: EMBEDDING_CONTAINER_MEMORY,
   selfSignUpEnabled: SELF_SIGN_UP_ENABLED,

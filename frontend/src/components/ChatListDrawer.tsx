@@ -50,6 +50,9 @@ type ItemProps = BaseProps & {
   onDelete: (conversationId: string) => void;
 };
 
+const ENABLE_PRICING: boolean =
+  import.meta.env.VITE_APP_ENABLE_PRICING === 'true';
+
 const Item: React.FC<ItemProps> = (props) => {
   const { pathname } = useLocation();
   const { conversationId: pathParam } = useParams();
@@ -334,13 +337,15 @@ const ChatListDrawer: React.FC<Props> = (props) => {
                   labelComponent={getPageLabel('/admin/api-management')}
                   onClick={closeSamllDrawer}
                 />
-                <DrawerItem
-                  isActive={false}
-                  icon={<PiUsersThree />}
-                  to="admin/users"
-                  labelComponent={t('button.userUsages')}
-                  onClick={closeSamllDrawer}
-                />
+                {ENABLE_PRICING && (
+                  <DrawerItem
+                    isActive={false}
+                    icon={<PiUsersThree />}
+                    to="admin/users"
+                    labelComponent={t('button.userUsages')}
+                    onClick={closeSamllDrawer}
+                  />
+                )}
               </ExpandableDrawerGroup>
             )}
 
