@@ -1,6 +1,10 @@
 # Mutiple Region Research Assistant 
 
 Modified from Bedrock-Claude-Chat (commit cdb0447) 
+https://github.com/aws-samples/bedrock-claude-chat
+
+# Add Pricing Function for SaaS User
+
 
 # Local R&D
 
