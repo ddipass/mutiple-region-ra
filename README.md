@@ -4,9 +4,11 @@ Modified from Bedrock-Claude-Chat (commit cdb0447)
 https://github.com/aws-samples/bedrock-claude-chat
 
 # Add Pricing Function for SaaS User
-https://github.com/ddipass/mutiple-region-ra/blob/main/SA.png
-https://github.com/ddipass/mutiple-region-ra/blob/main/Login.png
-https://github.com/ddipass/mutiple-region-ra/blob/main/Cost Split.png
+![SA图片](./SA.png)
+
+![登录图片](./Login.png)
+
+![成本拆分图片](./Cost%20Split.png)
 
 # Local R&D
 
